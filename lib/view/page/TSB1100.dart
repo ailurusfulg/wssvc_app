@@ -1,5 +1,4 @@
 // ignore_for_file: non_constant_identifier_names, must_call_super, prefer_typing_uninitialized_variables
-import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
