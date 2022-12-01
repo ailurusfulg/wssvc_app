@@ -315,7 +315,7 @@ class _TZA0100 extends State<TZA0100> with SingleTickerProviderStateMixin {
                   hidePassword = !hidePassword;
                 });
               },
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.4),
+              color: hidePassword   ? Colors.blue :Color.fromRGBO(159, 159, 159, 1.0),
               icon:
                   Icon(hidePassword ? Icons.visibility_off : Icons.visibility),
             ),
@@ -512,7 +512,9 @@ class _TZA0100 extends State<TZA0100> with SingleTickerProviderStateMixin {
                   String tempCorpCD =
                       value2.result.elementAt(0).sResult.toString();
                   _loadCounter(tempCorpCD);
-                  Get.toNamed('/test');
+                  // Get.toNamed('/test');
+                  Get.toNamed('/selectWC');
+                  Get.log("sdf");
                 }
               });
             }
