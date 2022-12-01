@@ -26,16 +26,13 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> with TickerProviderStateMixin {
-  AppUpdateInfo? _updateInfo;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  bool _flexibleUpdateAvailable = false;
 
   Future<void> checkForUpdate() async {
     InAppUpdate.checkForUpdate().then((info) {
       setState(() {
-        _updateInfo = info;
       });
     }).catchError((e) {
       showSnack(e.toString());
@@ -82,7 +79,7 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
         if (reverse) {
           Future.delayed(const Duration(milliseconds: 500), () {});
           //비동기로 flutter secure storage 정보를 불러오는 작업.
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             _asyncMethod();
           });
         }

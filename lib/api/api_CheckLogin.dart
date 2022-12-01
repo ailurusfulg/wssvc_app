@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../model/models.dart';
 
 class APICheckLogin {
-  var url = Uri.parse('https://easycontainer.kuls.co.kr/ext/Ezcon_BNP/CheckLogin.php');
+  var url = Uri.parse('https://easycontainer.co.kr/ext/Ezcon_BNP/CheckLogin.php');
   String token = "ba7da079703c28825269ae6d44fc7fa3";
 
   Future getSelect(String sFunctionName, List<String> sParam) async {
