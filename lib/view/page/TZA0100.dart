@@ -367,7 +367,7 @@ class _TZA0100 extends State<TZA0100> with SingleTickerProviderStateMixin {
       margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 3),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: const Color(0xFF06115A),
+          backgroundColor: const Color(0xFF06115A),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
@@ -472,15 +472,14 @@ class _TZA0100 extends State<TZA0100> with SingleTickerProviderStateMixin {
     }
     List<String> sParamsPW = [sUserId, sPassword];
     APICheckLogin apiService = APICheckLogin();
-
       apiService.getSelect("CHECKLOGIN_S1", sParamsPW).then((value) {
       setState(() {
+
         if (value.user.isNotEmpty) {
           userModel = value.user;
           DateTime getDate = DateTime.parse(userModel.elementAt(0).sEFFECT_DT);
           DateTime nowDate = DateTime.now();
           Duration duration = getDate.difference(nowDate);
-
           if (userModel.elementAt(0).sUserId != '') {
             if (userModel.elementAt(0).sCORP_USE_FLG == 'N') {
               Get.defaultDialog(
@@ -513,8 +512,7 @@ class _TZA0100 extends State<TZA0100> with SingleTickerProviderStateMixin {
                       value2.result.elementAt(0).sResult.toString();
                   _loadCounter(tempCorpCD);
                   // Get.toNamed('/test');
-                  Get.toNamed('/selectWC');
-                  Get.log("sdf");
+                  Get.toNamed('/selectWrk');
                 }
               });
             }

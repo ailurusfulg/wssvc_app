@@ -12,7 +12,7 @@ class AppRoutes {
     GetPage(name: '/load', page: () => const TYA1100(),transition: Transition.cupertino),
     GetPage(name: '/move', page: () => const TYA1200(),transition: Transition.cupertino),
     GetPage(name: '/cancel', page: () => TWB1200(),transition: Transition.cupertino),
-    GetPage(name: '/test', page: () => const TSB1100(),transition: Transition.cupertino),
+    GetPage(name: '/selectWrk', page: () => const TSB1100(),transition: Transition.cupertino),
     GetPage(name: '/test2', page: () => const TSB1200(),transition: Transition.cupertino),
     GetPage(name: '/test3', page: () => const TSB1300(),transition: Transition.cupertino),
     GetPage(name: '/test4', page: () => const TSB1201(),transition: Transition.cupertino),

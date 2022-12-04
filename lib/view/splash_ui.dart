@@ -143,7 +143,7 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
       APICheckLogin apiCheckLogin = APICheckLogin();
       apiCheckLogin.getSelect('CHECKLOGIN_S2', sParam).then((value) {
         if (value.result.elementAt(0).sResult != "") {
-          Get.toNamed('/selectWC');
+          Get.toNamed('/selectWrk');
         }
         else{
           Get.toNamed('/signin');
