@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_rethrow_when_possible, void_checks
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 //loading indicator code is a modified and simplified version of this code
 //https://github.com/fayaz07/ots

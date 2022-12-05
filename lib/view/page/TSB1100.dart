@@ -81,45 +81,6 @@ class TankDataSource extends DataGridSource {
   }
 }
 
-// List<CountContrResponsemodel> getOwnerData() {
-//   return [
-//     // Owner('1', '버치', '10001'),
-//     // Owner('2', '벌크', '10002'),
-//     // Owner(3, '버치', 10003),
-//     // Owner(4, '이웨이', 10004),
-//     // Owner(5, '벌크', 10005),
-//     // Owner(6, '이웨이', 10006),
-//   ];
-// }
-
-// List<Tank> getTankData() {
-//   return [
-//     Tank(10001, '19-Sep-22', '19-Sep-22', '19-Sep-22'),
-//     Tank(10002, '19-Sep-22', '19-Sep-22', '19-Sep-22'),
-//     Tank(10003, '19-Sep-22', '19-Sep-22', '19-Sep-22'),
-//     Tank(10004, '19-Sep-22', '19-Sep-22', '19-Sep-22'),
-//     Tank(10005, '19-Sep-22', '19-Sep-22', '19-Sep-22'),
-//     Tank(10006, '19-Sep-22', '19-Sep-22', '19-Sep-22'),
-//   ];
-// }
-
-// class Owner {
-//   Owner(this.index, this.owner, this.no);
-//
-//   final String index;
-//   final String owner;
-//   final String no;
-// }
-//
-// class Tank {
-//   Tank(this.no, this.sch, this.cc, this.cheak);
-//
-//   final String no;
-//   final String sch;
-//   final String cc;
-//   final String cheak;
-// }
-
 class _TSB1100 extends State<TSB1100> {
   static const storage = FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
   // List<Owner> owners = <Owner>[];
@@ -672,62 +633,58 @@ class _TSB1100 extends State<TSB1100> {
                                     width: screenWidth * 0.08,
                                     child: Column(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 250),
-                                          child: Container(
-                                            child: const AutoSizeText(
-                                              '상세내역',
-                                              style: TextStyle(
-                                                height: 1.5,
-                                                color: Color.fromRGBO(61, 61, 61, 1),
-                                                fontSize: 20.6,
-                                                fontFamily: 'NotoSansKR',
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                              textAlign: TextAlign.center,
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 250),
+                                          child: AutoSizeText(
+                                            '상세내역',
+                                            style: TextStyle(
+                                              height: 1.5,
+                                              color: Color.fromRGBO(61, 61, 61, 1),
+                                              fontSize: 20.6,
+                                              fontFamily: 'NotoSansKR',
+                                              fontWeight: FontWeight.w600,
                                             ),
+                                            textAlign: TextAlign.center,
                                           ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(left: 10, top: 5),
-                                          child: Container(
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius
-                                                        .circular(2),
-                                                    color: Colors.white,
-                                                    border: Border.all(
-                                                      color: const Color.fromRGBO(88, 105, 214, 1),
-                                                    ),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(2),
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                    color: const Color.fromRGBO(88, 105, 214, 1),
                                                   ),
-                                                  height: screenHeight * 0.028,
-                                                  width: screenWidth * 0.015,
-                                                  child:  const Icon(Icons.chevron_right,
-                                                      size: 20, color: Color.fromRGBO(88, 105, 214, 1)),
                                                 ),
-                                                 SizedBox(width: 2),
-                                                 Container(
-                                                   width: 67,
-                                                   child: AutoSizeText(
-                                                     cnt_ContrInfo.isEmpty ? '' :
-                                                     cnt_ContrInfo.elementAt(0).sBP_NM,
-                                                     overflow: TextOverflow.ellipsis,
-                                                     maxLines: 1,
-                                                    style: const TextStyle(
-                                                      height: 1.2,
-                                                      color: Color.fromRGBO(88, 105, 214, 1),
-                                                      fontSize: 14,
-                                                      fontFamily: 'NotoSansKR',
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                ),
-                                                 ),
-                                              ],
-                                            )
+                                                height: screenHeight * 0.028,
+                                                width: screenWidth * 0.015,
+                                                child:  const Icon(Icons.chevron_right,
+                                                    size: 20, color: Color.fromRGBO(88, 105, 214, 1)),
+                                              ),
+                                               const SizedBox(width: 2),
+                                               SizedBox(
+                                                 width: 67,
+                                                 child: AutoSizeText(
+                                                   cnt_ContrInfo.isEmpty ? '' :
+                                                   cnt_ContrInfo.elementAt(0).sBP_NM,
+                                                   overflow: TextOverflow.ellipsis,
+                                                   maxLines: 1,
+                                                  style: const TextStyle(
+                                                    height: 1.2,
+                                                    color: Color.fromRGBO(88, 105, 214, 1),
+                                                    fontSize: 14,
+                                                    fontFamily: 'NotoSansKR',
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                              ),
+                                               ),
+                                            ],
                                           ),
                                         )
                                       ],
@@ -1078,7 +1035,7 @@ class _TSB1100 extends State<TSB1100> {
         builder: (context) {
           return SafeArea(
               child: Center(
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width / 1.1,
               height: 550,
               child: SfDateRangePicker(

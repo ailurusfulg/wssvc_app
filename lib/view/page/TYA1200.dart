@@ -1,10 +1,8 @@
-// ignore_for_file: non_constant_identifier_names, camel_case_types
+// ignore_for_file: non_constant_identifier_names, camel_case_types, prefer_typing_uninitialized_variables, must_call_super
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -202,8 +200,6 @@ class _TYA1200 extends State<TYA1200> with AutomaticKeepAliveClientMixin {
 
           var temp = Get.arguments;
           String valBlock = temp.toString().split('/')[0];
-          String valBay = temp.toString().split('/')[1];
-          int dfBlockIndex = 0;
           if (selectGrid == 'L') {
             dropBlockA.clear();
 
@@ -472,9 +468,8 @@ class _TYA1200 extends State<TYA1200> with AutomaticKeepAliveClientMixin {
                               borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             bottomLeft: Radius.circular(10),
-                          )),
-                          padding: const EdgeInsets.all(0),
-                          primary: const Color(0xFF4087EB)),
+                          )), backgroundColor: const Color(0xFF4087EB),
+                          padding: const EdgeInsets.all(0)),
                       onPressed: () {
                         setState(() {
                           int tempIndex = 0;
@@ -537,9 +532,8 @@ class _TYA1200 extends State<TYA1200> with AutomaticKeepAliveClientMixin {
                             borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
                           bottomRight: Radius.circular(10),
-                        )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        )), backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         int tempIndex = 0;
@@ -579,9 +573,8 @@ class _TYA1200 extends State<TYA1200> with AutomaticKeepAliveClientMixin {
                             borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           bottomLeft: Radius.circular(10),
-                        )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        )), backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         int tempIndex = 0;
@@ -640,9 +633,8 @@ class _TYA1200 extends State<TYA1200> with AutomaticKeepAliveClientMixin {
                             borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
                           bottomRight: Radius.circular(10),
-                        )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        )), backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         int tempIndex = 0;
@@ -680,9 +672,8 @@ class _TYA1200 extends State<TYA1200> with AutomaticKeepAliveClientMixin {
                             borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           bottomLeft: Radius.circular(10),
-                        )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        )), backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         selectGrid = 'R';

@@ -30,7 +30,6 @@ class _TWB1200 extends State<TWB1200> with AutomaticKeepAliveClientMixin {
   final key = GlobalKey<ScaffoldState>();
   final _searchQuery = TextEditingController();
   List<WRKHistoryResponseModel> searchContrInfo = [];
-  bool _IsSearching = false;
   String _searchText = '';
 
   // # 레이아웃 관련 변수
@@ -101,13 +100,11 @@ class _TWB1200 extends State<TWB1200> with AutomaticKeepAliveClientMixin {
     _searchQuery.addListener(() {
       if (_searchQuery.text.isEmpty) {
         setState(() {
-          _IsSearching = false;
           _searchText = "";
           _buildSearchList();
         });
       } else {
         setState(() {
-          _IsSearching = true;
           _searchText = _searchQuery.text;
           _buildSearchList();
         });
@@ -146,7 +143,6 @@ class _TWB1200 extends State<TWB1200> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     _loadCounter();
-    _IsSearching = false;
     // get_WorkHistory("", DateTime.now().toString());
     _buildSearchList();
     super.initState();
@@ -288,13 +284,6 @@ class _TWB1200 extends State<TWB1200> with AutomaticKeepAliveClientMixin {
                 (BuildContext context, DataGridRow row, int rowIndex) {
               return GestureDetector(
                 onTap: () {
-                  String tempEMP_NM = getWorksSum
-                      .where((element) => element.sContr_NO
-                          .toLowerCase()
-                          .contains(_searchText.toLowerCase()))
-                      .toList()
-                      .elementAt(rowIndex)
-                      .sORD_EMP;
                   String tempContr_WRK_NO = getWorksSum
                       .where((element) => element.sContr_NO
                           .toLowerCase()

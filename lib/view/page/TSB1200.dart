@@ -1,11 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easycontainer_dwl/api/api.dart';
 import 'package:easycontainer_dwl/model/models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
 
 class TSB1200 extends StatefulWidget {
   const TSB1200({Key? key}) : super(key: key);
@@ -61,11 +60,11 @@ class _TSB1200 extends State<TSB1200> {
     });
   }
 
-  Future<void> add_CheakContr(String sCNTKEY, String sTest_NO, String sREMK, String saveFlg ) async {
+  Future<void> add_CheakContr(String sCNTKEY, String sTestNO, String sREMK, String saveFlg ) async {
     APIAddCheakContr apiAddCheakContr = APIAddCheakContr();
     String sOutCode = '';
     String sOutMsg  = '';
-      List<String> sParam = ['WSTANK', sCNTKEY.toString(), sTest_NO, sREMK, saveFlg, '유저아이디' ,sOutCode, sOutMsg];
+      List<String> sParam = ['WSTANK', sCNTKEY.toString(), sTestNO, sREMK, saveFlg, '유저아이디' ,sOutCode, sOutMsg];
     await apiAddCheakContr.getUpdate("USP_WCY0200_I10", sParam).then((value) {
       setState(() {
         if(value.result.isNotEmpty) {
@@ -93,10 +92,6 @@ class _TSB1200 extends State<TSB1200> {
   Widget build(BuildContext context) {
     final screenHeight = Get.height;
     final screenWidth = Get.width;
-
-    TextEditingController _titleController =
-    TextEditingController();
-    TextEditingController _contentController = TextEditingController();
 
     return Scaffold(
       key: _scaffoldKey2,
@@ -128,9 +123,9 @@ class _TSB1200 extends State<TSB1200> {
       ),
       drawer: Drawer(
         child: Container(
-          color: Color.fromRGBO(122, 136, 230, 1),
+          color: const Color.fromRGBO(122, 136, 230, 1),
           child: ListView(
-            padding: EdgeInsets.only(top: 5), //여백 지정
+            padding: const EdgeInsets.only(top: 5), //여백 지정
             children: <Widget>[
               ListTile(
                 trailing:
@@ -245,7 +240,7 @@ class _TSB1200 extends State<TSB1200> {
         ),
       ),
       body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         child: SafeArea(
           child: GestureDetector(
             onTap: () {
@@ -878,7 +873,7 @@ class _TSB1200 extends State<TSB1200> {
                                                       width: screenWidth * 0.11,
                                                       child: ElevatedButton(
                                                           style: ElevatedButton.styleFrom(
-                                                            primary: Colors.white,
+                                                            backgroundColor: Colors.white,
                                                             minimumSize: const Size(200, 100),
                                                               alignment: Alignment.center,
                                                               textStyle: const TextStyle(fontSize: 20)
@@ -1063,7 +1058,7 @@ class _TSB1200 extends State<TSB1200> {
                                                     width: screenWidth * 0.05, //22
                                                     child: ElevatedButton(
                                                       style: ElevatedButton.styleFrom(
-                                                          primary: Colors.white,
+                                                          backgroundColor: Colors.white,
                                                           minimumSize: const Size(200, 100),
                                                           alignment: Alignment.center,
                                                           textStyle: const TextStyle(fontSize: 16)
@@ -1093,20 +1088,20 @@ class _TSB1200 extends State<TSB1200> {
                                                                       showDialog(
                                                                           context: context,
                                                                           builder: (BuildContext context) => AlertDialog(
-                                                                            title:  Text("알림"),
-                                                                            content: Text('값을 입력해 주세요.'),
+                                                                            title:  const Text("알림"),
+                                                                            content: const Text('값을 입력해 주세요.'),
                                                                             actions: [
                                                                               ElevatedButton(
                                                                                   onPressed: () => Navigator.of(context).pop(),
-                                                                                  child: Text('닫기')),
+                                                                                  child: const Text('닫기')),
                                                                             ],
                                                                           ));
                                                                     }
                                                                   },
-                                                                  child: Text('수정')),
+                                                                  child: const Text('수정')),
                                                               ElevatedButton(
                                                                   onPressed: () => Navigator.of(context).pop(),
-                                                                  child: Text('닫기')),
+                                                                  child: const Text('닫기')),
                                                             ],
                                                           ),
                                                         );
@@ -1143,7 +1138,7 @@ class _TSB1200 extends State<TSB1200> {
                                           height: screenHeight * 0.05,
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                primary: Colors.white,
+                                                backgroundColor: Colors.white,
                                                 minimumSize: const Size(200, 100),
                                                 alignment: Alignment.center,
                                                 textStyle: const TextStyle(fontSize: 20)
@@ -1180,8 +1175,8 @@ class _TSB1200 extends State<TSB1200> {
                                             height: screenHeight * 0.05,
                                             child: ElevatedButton(
                                               style: ElevatedButton.styleFrom(
-                                                  primary: Colors.white,
-                                                  minimumSize: Size(200, 100),
+                                                  backgroundColor: Colors.white,
+                                                  minimumSize: const Size(200, 100),
                                                   alignment: Alignment.center,
                                                   textStyle: const TextStyle(fontSize: 20)
                                               ), child: const Text('전체취소', style: TextStyle(color : Colors.red)),

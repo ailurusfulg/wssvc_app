@@ -29,7 +29,7 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
 
   // # Drawer 콜백
   void drawerCallback(bool isOpen) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _isDrawerOpen = isOpen;
         FocusScope.of(context).requestFocus(FocusNode());
@@ -353,8 +353,7 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                 });
               },
               style: ElevatedButton.styleFrom(
-                primary:
-                    stateOrder == 'L' ? const Color(0xff4087EB) : Colors.white,
+                backgroundColor: stateOrder == 'L' ? const Color(0xff4087EB) : Colors.white,
                 side: BorderSide(
                   color: stateOrder == 'L'
                       ? Colors.white
@@ -389,8 +388,7 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                 });
               },
               style: ElevatedButton.styleFrom(
-                primary:
-                    stateOrder == 'U' ? const Color(0xff4087EB) : Colors.white,
+                backgroundColor: stateOrder == 'U' ? const Color(0xff4087EB) : Colors.white,
                 side: BorderSide(
                   color: stateOrder == 'U'
                       ? Colors.white
@@ -419,7 +417,7 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                   Scaffold.of(context).openDrawer();
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  backgroundColor: Colors.white,
                   side: const BorderSide(color: Color(0xff4087EB)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -444,7 +442,7 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                     arguments: '$_selectedBlock/$_selectedBay');
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
+                backgroundColor: Colors.white,
                 side: const BorderSide(color: Color(0xff4087EB)),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -473,9 +471,8 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                               borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
                             bottomLeft: Radius.circular(10),
-                          )),
-                          padding: const EdgeInsets.all(0),
-                          primary: const Color(0xFF4087EB)),
+                          )), backgroundColor: const Color(0xFF4087EB),
+                          padding: const EdgeInsets.all(0)),
                       onPressed: () {
                         setState(() {
                           clearSelectGrid();
@@ -551,9 +548,8 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                             borderRadius: BorderRadius.only(
                           topRight: Radius.circular(10),
                           bottomRight: Radius.circular(10),
-                        )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        )), backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         clearSelectGrid();
@@ -596,9 +592,8 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                             borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(10),
                           bottomLeft: Radius.circular(10),
-                        )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        )), backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         clearSelectGrid();
@@ -673,8 +668,8 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                           topRight: Radius.circular(10),
                           bottomRight: Radius.circular(10),
                         )),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color(0xFF4087EB)),
+                        backgroundColor: const Color(0xFF4087EB),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         clearSelectGrid();
@@ -1350,7 +1345,7 @@ class _TYA1100 extends State<TYA1100> with AutomaticKeepAliveClientMixin {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.all(0),
-                                    primary: setContrColor(
+                                    backgroundColor: setContrColor(
                                         sIndexTemp,
                                         'X',
                                         'Y',

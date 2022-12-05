@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easycontainer_dwl/api/api.dart';
 import 'package:easycontainer_dwl/model/models.dart';

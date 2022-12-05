@@ -4,27 +4,19 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
-import '../../api/api_AddContainerLoad.dart';
-import '../../api/api_AddContainerUnload.dart';
 import '../../api/api_GetBayInfo.dart';
 import '../../api/api_GetBlockBayContainerMove.dart';
 import '../../api/api_GetBlockInfo.dart';
 import '../../api/api_GetLoadOrder.dart';
 import '../../api/api_GetSearchContr.dart';
-import '../../api/api_GetUnLoadOrder.dart';
 import '../../common/common_widget.dart';
-import '../../common/navigation_drawer_widget.dart';
 import '../../controller/SearchStateController.dart';
-import '../../model/AddContrLoad_model.dart';
-import '../../model/AddContrUnLoad_model.dart';
 import '../../model/BayInfo_model.dart';
 import '../../model/BlockInfo_model.dart';
 import '../../model/LoadOrder_model.dart';
@@ -39,14 +31,14 @@ class TSB1300 extends StatefulWidget {
   _TSB1300 createState() => _TSB1300();
 }
 
-final GlobalKey<ScaffoldState> _scaffoldKey3 = new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _scaffoldKey3 = GlobalKey<ScaffoldState>();
 
 class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   bool _isDrawerOpen = false;
 
   // # Drawer 콜백
   void drawerCallback(bool isOpen) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _isDrawerOpen = isOpen;
         FocusScope.of(context).requestFocus(FocusNode());
@@ -58,7 +50,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   }
 
   // # 그리드 관련 변수
-  bool selectFlag = false;
+  bool selectFlag = true;
   final DataGridController _controller = DataGridController();
   late final _moveflag = ValueNotifier(selectFlag);
   String firstClick = '';
@@ -82,8 +74,6 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   List<BlockResponseModel> getBlock = [];
   List<BayResponseModel> getBay = [];
   List<LOCResponseModel> getLocationContr = [];
-  List<AddContrLoadResponseModel> result_L = [];
-  List<AddContrUnLoadResponseModel> result_U = [];
 
   var reContrList = [];
   int allBayCount = 35;
@@ -100,7 +90,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   late String search_Contr = '';
 
   // # 캐시 저장 관련 변수
-  late String shareWC = '', sCorp_CD = '', sUser_ID = '', shareBLOCK = '';
+  final String shareWC = 'WS01', sCorp_CD = 'WSTANK', sUser_ID = '', shareBLOCK = '6';
 
   // # 기타 변수
   late String sContainerCode = '';
@@ -119,19 +109,6 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
     await apiGetLoadOrder.getSelect("USP_GET_LOADORDER", sParam).then((value) {
       setState(() {
         getLoadOrder = value.approval.isNotEmpty ? value.approval : [];
-      });
-    });
-  }
-
-  // # API 호출(하차지시 리스트)
-  Future<void> get_UnLoadOrder() async {
-    APIGetUnLoadOrder apiGetUnLoadOrder = APIGetUnLoadOrder();
-    List<String> sParam = [sCorp_CD, shareWC, ''];
-    await apiGetUnLoadOrder
-        .getSelect("USP_GET_UNLOADORDER", sParam)
-        .then((value) {
-      setState(() {
-        getUnLoadOrder = value.approval.isNotEmpty ? value.approval : [];
       });
     });
   }
@@ -215,103 +192,9 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
     });
   }
 
-  // # API 호출(컨테이너 상차등록)
-  Future<void> add_Contr_Load(
-    String sCorpCD,
-    String sDRVID,
-    String sVehicle,
-    String sContrKey,
-    String sContrNO,
-    String sWorkCenter,
-    String sBlockCD,
-    int iBayID,
-    int iRowID,
-    int iTierID,
-    String sOutCode,
-    String sOutMsg,
-  ) async {
-    APIAddContrLoad apiAddContrLoad = APIAddContrLoad();
-    List<String> sParam = [
-      sCorpCD,
-      sDRVID,
-      sVehicle,
-      sContrKey,
-      sContrNO,
-      sWorkCenter,
-      sBlockCD,
-      iBayID.toString(),
-      iRowID.toString(),
-      iTierID.toString(),
-      sOutCode,
-      sOutMsg,
-    ];
-    await apiAddContrLoad.getUpdate("USP_ADD_CONTR_LOAD", sParam).then((value) {
-      setState(() {
-        if (value.result.isNotEmpty) {
-          result_L = value.result;
-          String Msg = result_L.elementAt(0).rsMsg;
-          if (result_L.elementAt(0).rsCode != 'S') {
-            Get.defaultDialog(title: "알림", content: Text(Msg));
-          }
-        } else {}
-      });
-    });
-  }
-
-  // # API 호출(컨테이너 하차등록)
-  Future<void> add_Contr_UnLoad(
-    String sCorpCD,
-    String sDRVID,
-    String sVehicle,
-    String sContrKey,
-    String sContrNO,
-    String sWorkCenter,
-    String sBlockCD,
-    String sBayID,
-    String sRowID,
-    String sTierID,
-    String sOutCode,
-    String sOutString,
-  ) async {
-    APIAddContrUnLoad apiAddContrUnLoad = APIAddContrUnLoad();
-    List<String> sParam = [
-      sCorpCD,
-      sDRVID,
-      sVehicle,
-      sContrKey,
-      sContrNO,
-      sWorkCenter,
-      sBlockCD,
-      sBayID,
-      sRowID,
-      sTierID,
-      sOutCode,
-      sOutString,
-    ];
-    await apiAddContrUnLoad
-        .getUpdate("USP_ADD_CONTR_UNLOAD", sParam)
-        .then((value) {
-      setState(() {
-        if (value.result.isNotEmpty) {
-          result_U = value.result;
-          String Msg = result_U.elementAt(0).rsMsg;
-          if (result_U.elementAt(0).rsCode != "S") {
-            Get.defaultDialog(title: "알림", content: Text(Msg));
-          }
-        } else {}
-      });
-    });
-  }
-
 // # 캐시 호출
   Future<void> _loadCounter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    sCorp_CD = prefs.getString('CorpCD')!;
-    sUser_ID = prefs.getString('UserID') ?? '';
-    shareWC = prefs.getString('WC') ?? '';
-    shareBLOCK = prefs.getString('dBLOCK') ?? '';
     get_LoadOrder();
-    get_UnLoadOrder();
     get_BlockInfo();
     get_BayInfo(sCorp_CD, shareWC, shareBLOCK);
     get_BlockBayContrMove(sCorp_CD, shareWC, shareBLOCK, '1');
@@ -448,9 +331,8 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        padding: const EdgeInsets.all(0),
-                        primary: const Color.fromRGBO(94, 112, 229, 1)),
+                            borderRadius: BorderRadius.circular(5)), backgroundColor: const Color.fromRGBO(94, 112, 229, 1),
+                        padding: const EdgeInsets.all(0)),
                     onPressed: () {
                       setState(() {
                         clearSelectGrid();
@@ -479,7 +361,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton(
-                    icon: Icon(Icons.expand_more,
+                    icon: const Icon(Icons.expand_more,
                         color: Color.fromRGBO(94, 112, 229, 1), size: 35),
                     isExpanded: true,
                     dropdownColor: Colors.white70,
@@ -488,7 +370,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                     items: dropBlock.map((item) {
                       return DropdownMenuItem(
                         alignment: Alignment.center,
-                        child: Container(
+                        child: SizedBox(
                           // alignment: Alignment.center,
                           width: screenWidth * 0.05,
                           child: AutoSizeText(mapBlock[item].toString(),
@@ -523,9 +405,8 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: const EdgeInsets.all(0),
-                      primary: const Color.fromRGBO(94, 112, 229, 1)),
+                          borderRadius: BorderRadius.circular(5)), backgroundColor: const Color.fromRGBO(94, 112, 229, 1),
+                      padding: const EdgeInsets.all(0)),
                   onPressed: () {
                     setState(() {
                       clearSelectGrid();
@@ -555,9 +436,8 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: const EdgeInsets.all(0),
-                      primary: const Color.fromRGBO(94, 112, 229, 1)),
+                          borderRadius: BorderRadius.circular(5)), backgroundColor: const Color.fromRGBO(94, 112, 229, 1),
+                      padding: const EdgeInsets.all(0)),
                   onPressed: () {
                     setState(() {
                       clearSelectGrid();
@@ -586,7 +466,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton(
-                    icon: Icon(Icons.expand_more,
+                    icon: const Icon(Icons.expand_more,
                         color: Color.fromRGBO(94, 112, 229, 1), size: 35),
                     isExpanded: true,
                     dropdownColor: Colors.white70,
@@ -629,9 +509,8 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: const EdgeInsets.all(0),
-                      primary: const Color.fromRGBO(94, 112, 229, 1)),
+                          borderRadius: BorderRadius.circular(5)), backgroundColor: const Color.fromRGBO(94, 112, 229, 1),
+                      padding: const EdgeInsets.all(0)),
                   onPressed: () {
                     setState(() {
                       clearSelectGrid();
@@ -683,7 +562,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
             colorScheme: ThemeData()
                 .colorScheme
                 .copyWith(primary: const Color(0xff707070))),
-        child: Container(
+        child: SizedBox(
           height: screenHeight * 0.06,
           width: screenWidth * 0.35,
           child: AutoSizeTextField(
@@ -714,254 +593,12 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
       ),
     );
 
-    // # 위젯 - 검색창 텍스트필드
-    final txtSearch = InkWell(
-      onTap: () async {
-        search_Contr = await showSearch(
-          context: context,
-          delegate: CCustomSearchDelegate(),
-        ) as String;
-        sc.change(search_Contr);
-        get_BayInfo(sCorp_CD, shareWC, sc.searchBlockCD.value);
-        _selectedBlock = sc.searchBlockCD.value;
-        _selectedBay = sc.searchBay.value;
-        moveScroll(int.parse(sc.searchRow.value), reContrList.length);
-        _refresh();
-      },
-      child: Row(
-        children: [
-          Container(
-            height: screenHeight * 0.5,
-            width: screenWidth * 0.25,
-            alignment: Alignment.center,
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(width: 1.0, color: const Color(0xff707070)),
-            ),
-            child: Center(
-              child: Obx(
-                () => AutoSizeText(
-                  sc.searchContrNO.value,
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: _fontFamily),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            height: screenHeight * 0.6,
-            width: screenWidth * 0.3,
-            alignment: Alignment.center,
-            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.0),
-              border: Border.all(width: 1.0, color: const Color(0xff707070)),
-            ),
-            child: Center(
-              child: Obx(
-                () => AutoSizeText(
-                  sc.searchBlock.value +
-                      '-' +
-                      sc.searchBay.value +
-                      '-' +
-                      sc.searchRow.value +
-                      '-' +
-                      sc.searchTier.value,
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: _fontFamily),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    // # 위젯 - 도움말
-    final txtHelper = InkWell(
-      onTap: () {
-        Get.toNamed('/cancel');
-      },
-      child: Container(
-        height: screenHeight * 0.06,
-        width: screenWidth * 0.1,
-        margin: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          color: const Color(0xFF2A4178),
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 3,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(CupertinoIcons.restart, size: 30, color: Colors.white),
-            AutoSizeText(' 복구',
-                maxLines: 1,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontFamily: _fontFamily)),
-          ],
-        ),
-      ),
-    );
-
-    // # 위젯 - 재수신 버튼
-    final btnResearch = InkWell(
-        onTap: () {
-          setState(() {
-            _searchQuery.clear();
-            _refresh();
-          });
-        },
-        child: Container(
-          height: screenHeight * 0.06,
-          width: screenWidth * 0.15,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2A4178),
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(CupertinoIcons.repeat, size: 30, color: Colors.white),
-              AutoSizeText(' 재수신',
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontFamily: _fontFamily)),
-            ],
-          ),
-        ));
-
-    // # 위젯 - 확인(저장) 버튼
-    final btnSave = InkWell(
-        onTap: () {
-          if (firstClick.isEmpty || !selectFlag) {
-            Get.defaultDialog(
-                title: '알림',
-                content: Text(stateOrder == 'L'
-                    ? '반출 할 컨테이너를 선택하세요.'
-                    : '반입 할 컨테이너를 선택하세요.'));
-            return;
-          } else if (firstClick.endsWith('L')) {
-            return;
-          } else {
-            setState(() {
-              stateOrder == 'L'
-                  ? add_Contr_Load(
-                      sCorp_CD,
-                      sUser_ID,
-                      '0000',
-                      firstClick.split('\n')[3],
-                      firstClick.split('\n')[0],
-                      shareWC,
-                      _selectedBlock,
-                      int.parse(_selectedBay),
-                      ((firstClickIndex ~/ 6) + 1),
-                      (6 - (firstClickIndex % 6)),
-                      '0',
-                      '',
-                    )
-                  : add_Contr_UnLoad(
-                      sCorp_CD,
-                      sUser_ID,
-                      '0000',
-                      _paramModel_U.sCONTR_KEY,
-                      _paramModel_U.sContrNO,
-                      shareWC,
-                      _selectedBlock,
-                      _selectedBay,
-                      ((firstClickIndex ~/ 6) + 1).toString(),
-                      (6 - (firstClickIndex % 6)).toString(),
-                      '0',
-                      '',
-                    );
-              stateOrder == 'L' ? get_LoadOrder() : get_UnLoadOrder();
-              _refresh();
-              firstClick = '';
-              selectFlag = false;
-              sContrNO_U = '';
-            });
-          }
-        },
-        child: Container(
-          height: screenHeight * 0.06,
-          width: screenWidth * 0.15,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2A4178),
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                CupertinoIcons.floppy_disk,
-                size: 30,
-                color: Colors.white,
-              ),
-              AutoSizeText(' 확인',
-                  maxLines: 1,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                      fontFamily: _fontFamily)),
-            ],
-          ),
-        ));
     // # 위젯 - 컨테이너 리스트
     final grdLoadOrderList = Container(
       height: screenHeight * 0.61,
       width: screenWidth * 0.425,
       decoration: BoxDecoration(
-        border: Border.all(width: 1, color: Color.fromRGBO(207, 207, 207, 1)),
+        border: Border.all(width: 1, color: const Color.fromRGBO(207, 207, 207, 1)),
       ),
       child: RefreshIndicator(
         key: refreshKey,
@@ -1075,9 +712,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 }
               }
             },
-            source: stateOrder == 'L'
-                ? CContainerDataSource(dataSource: _buildSearchList())
-                : UnCContainerDataSource(dataSource: _buildUnSearchList()),
+            source: ContainerDataSource(dataSource: _buildSearchList()),
             columns: <GridColumn>[
               GridColumn(
                   columnName: '구분',
@@ -1206,7 +841,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
       width: screenWidth * 0.546,
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(width: 1.5, color: Color.fromRGBO(207, 207, 207, 1)),
+        border: Border.all(width: 1.5, color: const Color.fromRGBO(207, 207, 207, 1)),
       ),
       child: Row(
         children: [
@@ -1221,15 +856,15 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 return Container(
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Color.fromRGBO(251, 251, 251, 1),
+                      color: const Color.fromRGBO(251, 251, 251, 1),
                       border:
-                          Border.all(color: Color.fromRGBO(207, 207, 207, 1))),
+                          Border.all(color: const Color.fromRGBO(207, 207, 207, 1))),
                   child: AutoSizeText(
                     (6 - i).toString(),
                     maxLines: 1,
                     style: TextStyle(
                       fontSize: 20,
-                      color: Color.fromRGBO(93, 88, 219, 1),
+                      color: const Color.fromRGBO(93, 88, 219, 1),
                       fontWeight: FontWeight.bold,
                       fontFamily: _fontFamily,
                     ),
@@ -1249,7 +884,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                       decoration: BoxDecoration(
                         // color: Color.fromRGBO(251, 251, 251, 1),
                         border:
-                            Border.all(color: Color.fromRGBO(207, 207, 207, 1)),
+                            Border.all(color: const Color.fromRGBO(207, 207, 207, 1)),
                       ),
                       child: GridView.count(
                         shrinkWrap: true,
@@ -1303,138 +938,37 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                                   ),
                                   fit: BoxFit.fill,
                                 )),
-                            child: InkWell(
-                              onDoubleTap: () {
-                                if (sIndexTemp.length < 4) {
-                                  return;
-                                } else if (sIndexTemp
-                                    .toString()
-                                    .endsWith('L')) {
-                                  Get.defaultDialog(
-                                      title: '알림',
-                                      content: const Text('반출지시된 컨테이너가 아닙니다.'));
-                                } else if (stateOrder == 'L') {
-                                  firstClickIndex = i;
-
-                                  add_Contr_Load(
-                                    sCorp_CD,
-                                    sUser_ID,
-                                    '0000',
-                                    sIndexTemp.split('\n')[3],
-                                    (sIndexTemp.split('\n')[0].substring(0, 4) +
-                                        sIndexTemp.split('\n')[1]),
-                                    shareWC,
-                                    _selectedBlock,
-                                    int.parse(_selectedBay),
-                                    ((firstClickIndex ~/ 6) + 1),
-                                    (6 - (firstClickIndex % 6)),
-                                    '0',
-                                    '',
-                                  );
-                                  firstClickIndex = 0;
-                                  _refresh();
-                                }
-                              },
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.all(0),
-                                    primary: setContrColor(
-                                        sIndexTemp,
-                                        'X',
-                                        'Y',
-                                        'Z',
-                                        'M',
-                                        'W',
-                                        "L",
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.transparent,
-                                        Colors.white)),
-                                onPressed: () {
-                                  // 상차
-                                  // Get.log(sIndexTemp.split('\n')[3]);
-                                  if (stateOrder == 'L') {
-                                    if (sIndexTemp.length < 4 ||
-                                        sIndexTemp.isEmpty) {
-                                      return;
-                                    } else {
-                                      // 초기화
-                                      setState(() {
-                                        if (sIndexTemp.contains('\nM')) {
-                                          reContrList.replaceRange(i, i + 1, [
-                                            sIndexTemp
-                                                .toString()
-                                                .replaceAll('\nM', '')
-                                          ]);
-                                          selectFlag = false;
-                                        } else {
-                                          if (firstClick.isNotEmpty &&
-                                              selectFlag) {
-                                            reContrList.replaceRange(
-                                                firstClickIndex,
-                                                firstClickIndex + 1,
-                                                [firstClick.toString()]);
-                                          }
-                                          firstClick =
-                                              sIndexTemp; // 첫번째 객체 변수 지정
-                                          firstClickIndex = i;
-                                          reContrList.replaceRange(i, i + 1,
-                                              [sIndexTemp.toString() + '\nM']);
-                                          selectFlag = true;
-                                        }
-                                      });
-                                    }
-                                    // 하차
-                                  } else if (stateOrder == 'U') {
-                                    if (sIndexTemp.length > 4 ||
-                                        sContrNO_U.isEmpty) {
-                                      if (sIndexTemp.contains('\nM')) {
-                                        setState(() {
-                                          selectFlag = false;
-                                          reContrList
-                                              .replaceRange(i, i + 1, [' ']);
-                                        });
-                                      }
-                                      return;
-                                    } else {
-                                      if (firstClick.isNotEmpty) {
-                                        setState(() {
-                                          reContrList.replaceRange(
-                                              firstClickIndex,
-                                              firstClickIndex + 1,
-                                              [firstClick]);
-                                        });
-                                        selectFlag = true;
-                                      }
-                                      firstClick = sIndexTemp;
-                                      firstClickIndex = i;
-                                      setState(() {
-                                        selectFlag = true;
-
-                                        reContrList.replaceRange(i, i + 1, [
-                                          sContrNO_U.toString() + '\n' + '\nM'
-                                        ]);
-                                      });
-                                    }
-                                  }
-                                },
-                                child: AutoSizeText(
-                                  (sIndexTemp.length > 4)
-                                      ? sIndexTemp.toString().split('\n')[0] +
-                                          '\n' +
-                                          sIndexTemp.toString().split('\n')[1] +
-                                          '\n' +
-                                          sIndexTemp.toString().split('\n')[2]
-                                      : ' ',
-                                  maxLines: 3,
-                                  style: const TextStyle(
-                                    letterSpacing: 0.1,
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.all(0), backgroundColor: setContrColor(
+                                      sIndexTemp,
+                                      'X',
+                                      'Y',
+                                      'Z',
+                                      'M',
+                                      'W',
+                                      "L",
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.transparent,
+                                      Colors.white)),
+                              onPressed: () {},
+                              child: AutoSizeText(
+                                (sIndexTemp.length > 4)
+                                    ? sIndexTemp.toString().split('\n')[0] +
+                                        '\n' +
+                                        sIndexTemp.toString().split('\n')[1] +
+                                        '\n' +
+                                        sIndexTemp.toString().split('\n')[2]
+                                    : ' ',
+                                maxLines: 3,
+                                style: const TextStyle(
+                                  letterSpacing: 0.1,
+                                  color: Colors.white,
+                                  fontSize: 15,
                                 ),
                               ),
                             ),
@@ -1455,16 +989,16 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                     return Container(
                       padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(251, 251, 251, 1),
+                          color: const Color.fromRGBO(251, 251, 251, 1),
                           border: Border.all(
-                              color: Color.fromRGBO(207, 207, 207, 1))),
+                              color: const Color.fromRGBO(207, 207, 207, 1))),
                       child: AutoSizeText(
                         (i + 1).toString(),
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
-                          color: Color.fromRGBO(93, 88, 219, 1),
+                          color: const Color.fromRGBO(93, 88, 219, 1),
                           fontWeight: FontWeight.bold,
                           fontFamily: _fontFamily,
                         ),
@@ -1509,9 +1043,9 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
         ),
         drawer: Drawer(
           child: Container(
-            color: Color.fromRGBO(122, 136, 230, 1),
+            color: const Color.fromRGBO(122, 136, 230, 1),
             child: ListView(
-              padding: EdgeInsets.only(top: 5), //여백 지정
+              padding: const EdgeInsets.only(top: 5), //여백 지정
               children: <Widget>[
                 ListTile(
                   trailing:
@@ -1805,7 +1339,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   // # 새로고침 관련 함수
   Future<void> _refresh() async {
     await Future.delayed(const Duration(seconds: 1));
-    stateOrder == 'L' ? get_LoadOrder() : get_UnLoadOrder();
+    get_LoadOrder();
 
     if (_selectedBlock == null || _selectedBay == null) {
       Get.defaultDialog(
@@ -1844,8 +1378,8 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   bool wantKeepAlive = true;
 }
 
-class CContainerDataSource extends DataGridSource {
-  CContainerDataSource({required List<LoadResponseModel> dataSource}) {
+class ContainerDataSource extends DataGridSource {
+  ContainerDataSource({required List<LoadResponseModel> dataSource}) {
     _dataSource = dataSource
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell(
@@ -1944,87 +1478,6 @@ class CContainerDataSource extends DataGridSource {
           } else {
             return Container(
               color: Colors.white,
-              alignment: Alignment.center,
-              child: AutoSizeText(
-                dataGridCell.value.toString(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontFamily: 'NotoSansKR'),
-              ),
-            );
-          }
-        }).toList());
-  }
-}
-
-class UnCContainerDataSource extends DataGridSource {
-  UnCContainerDataSource({required List<UnLoadResponseModel> dataSource}) {
-    _dataSource = dataSource
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell(
-                  columnName: '구분',
-                  value:
-                      (dataSource.length - dataSource.indexOf(e)).toString() +
-                          '\n' +
-                          (e.sORD_EMP.contains('-') ? '하차' : '대기')),
-              DataGridCell<String>(
-                  columnName: '컨테이너',
-                  value: e.sContrNO +
-                      '\n' +
-                      (e.sCONTR_LOAD_STS == 'E' ? 'Empty' : 'Full')),
-              DataGridCell<String>(columnName: '적입일', value: e.sWRK_PLN_DT),
-              DataGridCell<String>(
-                  columnName: '반출예정일', value: e.sIN_PLN_DT.substring(5)),
-              DataGridCell<String>(columnName: '오더', value: e.sORD_EMP),
-              DataGridCell<String>(columnName: '반출지', value: e.sARR_CD),
-              DataGridCell<String>(columnName: '추가정보', value: e.sVES_CD),
-            ]))
-        .toList();
-  }
-
-  List<DataGridRow> _dataSource = [];
-
-  @override
-  List<DataGridRow> get rows => _dataSource;
-
-  @override
-  DataGridRowAdapter? buildRow(DataGridRow row) {
-    Color getRowBackgroundColor() {
-      return Colors.white;
-    }
-
-    return DataGridRowAdapter(
-        color: getRowBackgroundColor(),
-        cells: row.getCells().map<Widget>((dataGridCell) {
-          if (dataGridCell.value.toString().contains('대기')) {
-            return Container(
-              margin: const EdgeInsets.all(3),
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Colors.orange,
-              ),
-              child: AutoSizeText(
-                dataGridCell.value.toString(),
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            );
-          } else if (dataGridCell.value.toString().contains('하차')) {
-            return Container(
-              margin: const EdgeInsets.all(3),
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xFFC866A4),
-              ),
-              child: AutoSizeText(
-                dataGridCell.value.toString(),
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-              ),
-            );
-          } else {
-            return Container(
-              color: Colors.transparent,
               alignment: Alignment.center,
               child: AutoSizeText(
                 dataGridCell.value.toString(),
