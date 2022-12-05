@@ -135,7 +135,7 @@ class _LoadingState extends State<Loading> with TickerProviderStateMixin {
     //(데이터가 없을때는 null을 반환을 합니다.)
     // storage.write(key: "login", value: "id " + '10000001 ' + " " + '10000001 ');
     userInfo = (await storage.read(key: "login")) ?? '';
-
+    Get.log(userInfo);
     //user의 정보가 있다면 바로 메인 페이지로 넝어가게 합니다.
     if (userInfo.isNotEmpty) {
       List<String> sParam = [userInfo.split(" ")[1], userInfo.split(" ")[3]];

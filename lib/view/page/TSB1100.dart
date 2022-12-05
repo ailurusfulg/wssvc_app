@@ -9,7 +9,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../api/api.dart';
 import '../../model/models.dart';
 
@@ -103,27 +103,28 @@ class TankDataSource extends DataGridSource {
 //   ];
 // }
 
-class Owner {
-  Owner(this.index, this.owner, this.no);
-
-  final String index;
-  final String owner;
-  final String no;
-}
-
-class Tank {
-  Tank(this.no, this.sch, this.cc, this.cheak);
-
-  final String no;
-  final String sch;
-  final String cc;
-  final String cheak;
-}
+// class Owner {
+//   Owner(this.index, this.owner, this.no);
+//
+//   final String index;
+//   final String owner;
+//   final String no;
+// }
+//
+// class Tank {
+//   Tank(this.no, this.sch, this.cc, this.cheak);
+//
+//   final String no;
+//   final String sch;
+//   final String cc;
+//   final String cheak;
+// }
 
 class _TSB1100 extends State<TSB1100> {
-  List<Owner> owners = <Owner>[];
+  static const storage = FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
+  // List<Owner> owners = <Owner>[];
   // late OwnerDataSource ownerDataSource;
-  List<Tank> tanks = <Tank>[];
+  // List<Tank> tanks = <Tank>[];
   // late TankDataSource tankDataSource;
   final TextEditingController _DataTimeEditingController = TextEditingController();
   final TextEditingController _EstimatedEditingController = TextEditingController();
@@ -191,7 +192,7 @@ class _TSB1100 extends State<TSB1100> {
           child: AppBar(
             backgroundColor: Colors.white,
             title: const Text(
-              '검사작업',
+              '수리작업',
               style: TextStyle(
                 height: 3,
                 // letterSpacing: 7,
@@ -229,13 +230,14 @@ class _TSB1100 extends State<TSB1100> {
                       right: 10, left: 10, top: 5, bottom: 5),
                   child: Container(
                     padding: const EdgeInsets.only(left: 10),
+
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
                     child: ListTile(
                       title: const Text(
-                        '검사작업',
+                        '수리작업',
                         style: TextStyle(
                           height: 1.5,
                           color: Color.fromRGBO(88, 105, 214, 1),
@@ -257,7 +259,7 @@ class _TSB1100 extends State<TSB1100> {
                     padding: const EdgeInsets.only(left: 10),
                     child: ListTile(
                       title: const Text(
-                        '메뉴2',
+                        '검사작업',
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
@@ -267,7 +269,7 @@ class _TSB1100 extends State<TSB1100> {
                         ),
                       ),
                       onTap: () {
-                        Get.offNamed('/test2');
+                        Get.offNamed('/test4');
                       },
                     ),
                   ),
@@ -279,7 +281,7 @@ class _TSB1100 extends State<TSB1100> {
                     padding: const EdgeInsets.only(left: 10),
                     child: ListTile(
                       title: const Text(
-                        '메뉴4',
+                        '컨테이너 위치',
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
@@ -289,7 +291,39 @@ class _TSB1100 extends State<TSB1100> {
                         ),
                       ),
                       onTap: () {
-                        Get.offNamed('/test4');
+                        Get.offNamed('/test3');
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: screenHeight * 0.55),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      right: 10, left: 10, top: 5, bottom: 5),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: ListTile(
+                      title: RichText(
+                        text: const TextSpan(
+                            children: [
+                        WidgetSpan(
+                        child: Icon(Icons.logout, color: Colors.white),
+                      ),
+                      TextSpan(
+                        text: ' 로그아웃',
+                        style: TextStyle(
+                          height: 1.5,
+                          color: Colors.white,
+                          fontSize: 18.6,
+                          fontFamily: 'NotoSansKR',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ]),
+                      ),
+                      onTap: () {
+                        storage.delete(key: "login");
+                        Get.offNamed('/signin');
                       },
                     ),
                   ),
@@ -481,7 +515,7 @@ class _TSB1100 extends State<TSB1100> {
                                         child: SfDataGrid(
                                           frozenColumnsCount: 0,
                                           selectionMode: SelectionMode.single,
-                                          allowSorting: true,
+                                          // allowSorting: true,
                                           source: OwnerDataSource(ownerData: cnt_Contr),
                                           columnWidthMode: ColumnWidthMode.fill,
                                           gridLinesVisibility: GridLinesVisibility.both,
@@ -681,7 +715,7 @@ class _TSB1100 extends State<TSB1100> {
                                                      cnt_ContrInfo.isEmpty ? '' :
                                                      cnt_ContrInfo.elementAt(0).sBP_NM,
                                                      overflow: TextOverflow.ellipsis,
-                                                     maxLines: 2,
+                                                     maxLines: 1,
                                                     style: const TextStyle(
                                                       height: 1.2,
                                                       color: Color.fromRGBO(88, 105, 214, 1),
@@ -804,7 +838,7 @@ class _TSB1100 extends State<TSB1100> {
                                             child: SfDataGrid(
                                               selectionMode:
                                                   SelectionMode.single,
-                                              allowSorting: true,
+                                              // allowSorting: true,
                                               source: TankDataSource(tankData: cnt_ContrInfo),
                                               columnWidthMode:
                                                   ColumnWidthMode.fill,
