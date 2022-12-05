@@ -1,11 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easycontainer_dwl/api/api.dart';
 import 'package:easycontainer_dwl/model/models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class TSB1201 extends StatefulWidget {
@@ -15,134 +12,26 @@ class TSB1201 extends StatefulWidget {
   _TSB1201 createState() => _TSB1201();
 }
 
-final int _rowsPerPage = 15;
-final double _dataPagerHeight = Get.height * 0.1;
+const int _rowsPerPage = 6;
+final double _dataPagerHeight = Get.height * 0.2;
 
 List<ContrTestResponsemodel> getContrTestList = <ContrTestResponsemodel>[];
-late OrderInfoDataSource _orderInfoDataSource;
 
+OrderInfoDataSource _orderInfoDataSource = OrderInfoDataSource();
+
+List<ContrTestResponsemodel> _paginatedRows = [];
 final GlobalKey<ScaffoldState> _scaffoldKey4 = GlobalKey<ScaffoldState>();
-
-class OrderInfoDataSource extends DataGridSource {
-  OrderInfoDataSource({required List<ContrTestResponsemodel> dataSource}) {
-    _dataSource  = dataSource;
-    _paginatedRows  = dataSource;
-    buildDataGridRow();
-  }
-
-  void buildDataGridRow() {
-    dataGridRows = _paginatedRows
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<String>(columnName: 'No', value: (_paginatedRows.indexOf(e)+1).toString()),
-      DataGridCell<String>(columnName: 'Owner', value: e.sBP_NM),
-      DataGridCell<String>(columnName: 'Tank No.', value: e.sCONTR_NO),
-      DataGridCell<String>(columnName: 'SCHEDULED', value: e.sOT_PLN_DT),
-      DataGridCell<String>(columnName: 'CC', value: e.sCC_DT),
-      DataGridCell<String>(columnName: 'CUSTOMER', value: e.sCUSTOMER),
-      DataGridCell<String>(columnName: 'REMARK', value: e.sREMK),
-    ])).toList();
-  }
-
-  List<ContrTestResponsemodel> _paginatedRows = [];
-  List<ContrTestResponsemodel> _dataSource = [];
-  List<DataGridRow> dataGridRows = [];
-
-  @override
-  List<DataGridRow> get rows => dataGridRows ;
-
-  @override
-  DataGridRowAdapter? buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-          if (e.columnName == 'No') {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerRight,
-              child: Text(
-                e.value.toString(),
-                overflow: TextOverflow.ellipsis,
-              ),
-            );
-          } else if (e.columnName == 'Owner') {
-            return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  e.value.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ));
-          } else if (e.columnName == 'Tank NO') {
-            return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  e.value.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ));
-          } else if (e.columnName == 'SCHDULED') {
-            return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  e.value.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ));
-          } else if (e.columnName == 'CC') {
-            return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  e.value.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ));
-          } else if (e.columnName == 'CUSTOMER') {
-            return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  e.value.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ));
-          } else {
-            return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.center,
-                child: Text(
-                  e.value.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ));
-          }
-        }).toList());
-  }
-
-  @override
-  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * _rowsPerPage;
-    int endIndex = startIndex + _rowsPerPage;
-    if (startIndex < _dataSource.length && endIndex <= _dataSource.length) {
-      _paginatedRows =
-          _dataSource.getRange(startIndex, endIndex).toList(growable: false);
-    } else {
-      _paginatedRows = <ContrTestResponsemodel>[];
-    }
-    buildDataGridRow();
-    notifyListeners();
-    return Future<bool>.value(true);
-  }
-  void updateDataGriDataSource() {
-    notifyListeners();
-  }
-}
+bool showLoadingIndicator = true;
 
 class _TSB1201 extends State<TSB1201> {
 
   Future<void> get_ContrTestList() async {
+    getContrTestList.clear();
     APIGetContrTestList apiGetContrTestList = APIGetContrTestList();
     List<String> sParam = ['WSTANK'];
     apiGetContrTestList.getSelect("USP_WCY0300", sParam).then((value) {
       setState(() {
         getContrTestList = value.contrtest.isNotEmpty ? value.contrtest : [];
-        Get.log(getContrTestList.elementAt(0).sREMK);
       });
     });
   }
@@ -151,10 +40,13 @@ class _TSB1201 extends State<TSB1201> {
   void initState() {
     super.initState();
     setState(() {
-      getContrTestList.clear();
       get_ContrTestList();
-      _orderInfoDataSource = OrderInfoDataSource(dataSource: getContrTestList);
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -308,27 +200,66 @@ class _TSB1201 extends State<TSB1201> {
           ),
         ),
       ),
-      body: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraint) {
+      body: getContrTestList.isEmpty
+          ? Center(child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.no_luggage, size: 60),
+              AutoSizeText("검사 대상이 없습니다.", style: TextStyle(fontSize: 30),),
+            ],
+          ))
+          : LayoutBuilder(builder: (BuildContext context, BoxConstraints constraint) {
         return Column(children: [
           SizedBox(
               height: (screenHeight - _dataPagerHeight) * 0.8,
               width: screenWidth,
-              child: _buildDataGrid(constraint),
+              child: _buildStack(constraint),
           ),
-          Container(
+          SizedBox(
               height: _dataPagerHeight,
               child: SfDataPager(
                 delegate: _orderInfoDataSource,
-                // pageCount: (getContrTestList.length / _rowsPerPage) < 0 ? 1 : (getContrTestList.length / _rowsPerPage),
-                pageCount: 3,
+                pageCount: (getContrTestList.length / _rowsPerPage < 0 ? 1 : getContrTestList.length / _rowsPerPage).ceilToDouble(),
                 direction: Axis.horizontal,
-              ))
+                onPageNavigationStart: (int pageIndex) {
+                  setState(() {
+                    showLoadingIndicator = true;
+                  });
+                },
+                onPageNavigationEnd: (int pageIndex) {
+                  setState(() {
+                    showLoadingIndicator = false;
+                  });
+                },
+              ),
+          ),
         ]);
-  },
-      ));
+      },
+    ));
+  }
+  Widget _buildStack(BoxConstraints constraints) {
+    List<Widget> _getChildren() {
+      final List<Widget> stackChildren = [];
+      stackChildren.add(_buildDataGrid(constraints));
+
+      if (showLoadingIndicator) {
+        stackChildren.add(Container(
+            color: Colors.black12,
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            child: const Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                ))));
+      }
+      return stackChildren;
+    }
+    return Stack(
+      children: _getChildren(),
+    );
   }
 
-  @override
   Widget _buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
         source: _orderInfoDataSource,
@@ -338,16 +269,25 @@ class _TSB1201 extends State<TSB1201> {
               columnName: 'No',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'No',
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
-              columnName: 'Tank No',
+              columnName: 'Owner',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Owner',
+                    overflow: TextOverflow.ellipsis,
+                  ))),
+          GridColumn(
+              columnName: 'TankNo',
+              label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
                   child: const Text(
                     'Tank No',
                     overflow: TextOverflow.ellipsis,
@@ -356,7 +296,7 @@ class _TSB1201 extends State<TSB1201> {
               columnName: 'SCHEDULED',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'SCHEDULED',
                     overflow: TextOverflow.ellipsis,
@@ -389,6 +329,119 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
         ]);
+  }
+}
 
+class OrderInfoDataSource extends DataGridSource {
+
+  OrderInfoDataSource() {
+    _paginatedRows = getContrTestList.toList(growable: false);
+    buildPaginatedDataGridRows();
+  }
+
+  List<DataGridRow> dataGridRows = [];
+
+  @override
+  List<DataGridRow> get rows => dataGridRows ;
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((e) {
+          if (e.columnName == 'No') {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.center,
+              child: Text(
+                e.value.toString(),
+                overflow: TextOverflow.ellipsis,
+              ),
+            );
+          } else if (e.columnName == 'Owner') {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  e.value.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ));
+          } else if (e.columnName == 'TankNo') {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  e.value.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ));
+          } else if (e.columnName == 'SCHDULED') {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  e.value.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ));
+          } else if (e.columnName == 'CC') {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  e.value.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ));
+          } else if (e.columnName == 'CUSTOMER') {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  e.value.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ));
+          }
+          else {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: Text(
+                  e.value.toString(),
+                  overflow: TextOverflow.ellipsis,
+                ));
+          }
+        }).toList());
+  }
+  @override
+  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
+    int startIndex = newPageIndex * _rowsPerPage; //6
+    int endIndex = startIndex + _rowsPerPage; //12
+    if (endIndex <= getContrTestList.length) {
+      await Future.delayed(const Duration(milliseconds: 1000));
+      _paginatedRows =
+          getContrTestList.getRange(startIndex, endIndex).toList(
+              growable: false);
+      buildPaginatedDataGridRows();
+      notifyListeners();
+    } else if(startIndex <= getContrTestList.length && endIndex > getContrTestList.length){
+      _paginatedRows =
+          getContrTestList.getRange(startIndex, getContrTestList.length).toList(
+              growable: false);
+      buildPaginatedDataGridRows();
+      notifyListeners();
+    } else {
+      _paginatedRows = [];
+    }
+    return true;
+  }
+
+  void buildPaginatedDataGridRows() {
+    dataGridRows = _paginatedRows
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+      DataGridCell<String>(columnName: 'No', value: (_paginatedRows.indexOf(e)+1).toString()),
+      DataGridCell<String>(columnName: 'Owner', value: e.sBP_NM),
+      DataGridCell<String>(columnName: 'TankNo', value: e.sCONTR_NO),
+      DataGridCell<String>(columnName: 'SCHEDULED', value: e.sOT_PLN_DT),
+      DataGridCell<String>(columnName: 'CC', value: e.sCC_DT),
+      DataGridCell<String>(columnName: 'CUSTOMER', value: e.sCUSTOMER),
+      DataGridCell<String>(columnName: 'REMARK', value: e.sREMK),
+    ])).toList(growable: false);
   }
 }
