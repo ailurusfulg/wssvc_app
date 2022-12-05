@@ -191,7 +191,7 @@ class _TSB1100 extends State<TSB1100> {
           child: AppBar(
             backgroundColor: Colors.white,
             title: const Text(
-              '검사작업',
+              '수리작업',
               style: TextStyle(
                 height: 3,
                 // letterSpacing: 7,
@@ -235,7 +235,7 @@ class _TSB1100 extends State<TSB1100> {
                     ),
                     child: ListTile(
                       title: const Text(
-                        '검사작업',
+                        '수리작업',
                         style: TextStyle(
                           height: 1.5,
                           color: Color.fromRGBO(88, 105, 214, 1),
@@ -257,7 +257,7 @@ class _TSB1100 extends State<TSB1100> {
                     padding: const EdgeInsets.only(left: 10),
                     child: ListTile(
                       title: const Text(
-                        '메뉴2',
+                        '검사작업',
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
@@ -267,7 +267,7 @@ class _TSB1100 extends State<TSB1100> {
                         ),
                       ),
                       onTap: () {
-                        Get.offNamed('/test2');
+                        Get.offNamed('/test4');
                       },
                     ),
                   ),
@@ -279,7 +279,7 @@ class _TSB1100 extends State<TSB1100> {
                     padding: const EdgeInsets.only(left: 10),
                     child: ListTile(
                       title: const Text(
-                        '메뉴4',
+                        '컨테이너 위치',
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
@@ -289,7 +289,7 @@ class _TSB1100 extends State<TSB1100> {
                         ),
                       ),
                       onTap: () {
-                        Get.offNamed('/test4');
+                        Get.offNamed('/test3');
                       },
                     ),
                   ),
