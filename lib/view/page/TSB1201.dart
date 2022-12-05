@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TSB1201 extends StatefulWidget {
   const TSB1201({Key? key}) : super(key: key);
@@ -60,6 +61,7 @@ class OrderInfoDataSource extends DataGridSource {
               alignment: Alignment.centerRight,
               child: Text(
                 e.value.toString(),
+                style: const TextStyle(color: Colors.black),
                 overflow: TextOverflow.ellipsis,
               ),
             );
@@ -69,6 +71,7 @@ class OrderInfoDataSource extends DataGridSource {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   e.value.toString(),
+                  style: const TextStyle(color: Colors.black),
                   overflow: TextOverflow.ellipsis,
                 ));
           } else if (e.columnName == 'Tank NO') {
@@ -135,14 +138,14 @@ class OrderInfoDataSource extends DataGridSource {
 }
 
 class _TSB1201 extends State<TSB1201> {
-
+  static const storage = FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
   Future<void> get_ContrTestList() async {
     APIGetContrTestList apiGetContrTestList = APIGetContrTestList();
     List<String> sParam = ['WSTANK'];
     apiGetContrTestList.getSelect("USP_WCY0300", sParam).then((value) {
       setState(() {
         getContrTestList = value.contrtest.isNotEmpty ? value.contrtest : [];
-        Get.log(getContrTestList.elementAt(0).sREMK);
+        Get.log(getContrTestList.elementAt(0).sCONTR_KEY);
       });
     });
   }
@@ -153,7 +156,7 @@ class _TSB1201 extends State<TSB1201> {
     setState(() {
       getContrTestList.clear();
       get_ContrTestList();
-      _orderInfoDataSource = OrderInfoDataSource(dataSource: getContrTestList);
+      _orderInfoDataSource =  OrderInfoDataSource(dataSource: getContrTestList);
     });
   }
 
@@ -299,6 +302,7 @@ class _TSB1201 extends State<TSB1201> {
                           ]),
                     ),
                     onTap: () {
+                      storage.delete(key: "login");
                       Get.offNamed('/signin');
                     },
                   ),
@@ -315,12 +319,12 @@ class _TSB1201 extends State<TSB1201> {
               width: screenWidth,
               child: _buildDataGrid(constraint),
           ),
-          Container(
+          SizedBox(
               height: _dataPagerHeight,
               child: SfDataPager(
                 delegate: _orderInfoDataSource,
-                // pageCount: (getContrTestList.length / _rowsPerPage) < 0 ? 1 : (getContrTestList.length / _rowsPerPage),
-                pageCount: 3,
+                // pageCount: (_orderInfoDataSource.rows.length / _rowsPerPage) < 0 ? 1 : (_orderInfoDataSource.rows.length / _rowsPerPage),
+                pageCount: 1,
                 direction: Axis.horizontal,
               ))
         ]);
@@ -331,6 +335,7 @@ class _TSB1201 extends State<TSB1201> {
   @override
   Widget _buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
+        // source: OrderInfoDataSource(dataSource: _orderInfoDataSource),
         source: _orderInfoDataSource,
         columnWidthMode: ColumnWidthMode.fill,
         columns: <GridColumn>[
@@ -338,7 +343,7 @@ class _TSB1201 extends State<TSB1201> {
               columnName: 'No',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                   child: const Text(
                     'No',
                     overflow: TextOverflow.ellipsis,

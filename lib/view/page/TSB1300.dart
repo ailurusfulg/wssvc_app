@@ -31,6 +31,7 @@ import '../../model/LoadOrder_model.dart';
 import '../../model/LocationContr_model.dart';
 import '../../model/SearchContr_model.dart';
 import '../../model/UnLoadOrder_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TSB1300 extends StatefulWidget {
   const TSB1300({Key? key}) : super(key: key);
@@ -39,11 +40,11 @@ class TSB1300 extends StatefulWidget {
   _TSB1300 createState() => _TSB1300();
 }
 
-final GlobalKey<ScaffoldState> _scaffoldKey3 = new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _scaffoldKey3 = GlobalKey<ScaffoldState>();
 
 class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   bool _isDrawerOpen = false;
-
+  static const storage = FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
   // # Drawer 콜백
   void drawerCallback(bool isOpen) {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -155,6 +156,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
             }
           }
           _selectedBlock = shareBLOCK;
+          Get.log(_selectedBlock);
         } else {
           getBlock = [];
         }
@@ -1616,6 +1618,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                             ]),
                       ),
                       onTap: () {
+                        storage.delete(key: "login");
                         Get.offNamed('/signin');
                       },
                     ),
@@ -1741,7 +1744,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+    _timer = Timer.periodic(const Duration(minutes: 3), (_) {
       if (firstClick.isEmpty && selectFlag == false) {
         _refresh();
       }

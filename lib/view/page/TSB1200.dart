@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 
 class TSB1200 extends StatefulWidget {
@@ -22,6 +23,7 @@ class Controller extends GetxController {
 
 class _TSB1200 extends State<TSB1200> {
   Controller controller = Get.put(Controller());
+  static const storage = FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
   bool switchValue = false;
   String buttonState = '완료';
   List<SelContrInfoResponsemodel> getSelcntinfo = [];
@@ -235,6 +237,7 @@ class _TSB1200 extends State<TSB1200> {
                           ]),
                     ),
                     onTap: () {
+                      storage.delete(key: "login");
                       Get.offNamed('/signin');
                     },
                   ),
