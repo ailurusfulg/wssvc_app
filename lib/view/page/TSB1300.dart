@@ -689,7 +689,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                         element.sVES_CD
                             .toLowerCase()
                             .contains(_searchText.toLowerCase());
-                  }).toList()[details.rowColumnIndex.rowIndex - 1];
+                  }).toList()[details.rowColumnIndex.rowIndex - 1]; 
 
                   if (_paramModel_U.sVes_Block == 0 &&
                       _paramModel_U.sVes_Bay == 0) {
