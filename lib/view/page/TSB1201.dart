@@ -208,13 +208,35 @@ class _TSB1201 extends State<TSB1201> {
                     right: 10, left: 10, top: 5, bottom: 5),
                 child: Container(
                   padding: const EdgeInsets.only(left: 10),
+                  child: ListTile(
+                    title: const Text(
+                      '수리작업',
+                      style: TextStyle(
+                        height: 1.5,
+                        color: Colors.white,
+                        fontSize: 18.6,
+                        fontFamily: 'NotoSansKR',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.offNamed('/selectWrk');
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 10, left: 10, top: 5, bottom: 5),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                   ),
                   child: ListTile(
                     title: const Text(
-                      '수리작업',
+                      '검사작업',
                       style: TextStyle(
                         height: 1.5,
                         color: Color.fromRGBO(88, 105, 214, 1),
@@ -236,29 +258,7 @@ class _TSB1201 extends State<TSB1201> {
                   padding: const EdgeInsets.only(left: 10),
                   child: ListTile(
                     title: const Text(
-                      '메뉴1',
-                      style: TextStyle(
-                        height: 1.5,
-                        color: Colors.white,
-                        fontSize: 18.6,
-                        fontFamily: 'NotoSansKR',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onTap: () {
-                      Get.offNamed('/test');
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    right: 10, left: 10, top: 5, bottom: 5),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: ListTile(
-                    title: const Text(
-                      '메뉴3',
+                      '컨테이너 위치',
                       style: TextStyle(
                         height: 1.5,
                         color: Colors.white,
@@ -269,6 +269,37 @@ class _TSB1201 extends State<TSB1201> {
                     ),
                     onTap: () {
                       Get.offNamed('/test3');
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.55),
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 10, left: 10, top: 5, bottom: 5),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: ListTile(
+                    title: RichText(
+                      text: const TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: Icon(Icons.logout, color: Colors.white),
+                            ),
+                            TextSpan(
+                              text: ' 로그아웃',
+                              style: TextStyle(
+                                height: 1.5,
+                                color: Colors.white,
+                                fontSize: 18.6,
+                                fontFamily: 'NotoSansKR',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ]),
+                    ),
+                    onTap: () {
+                      Get.offNamed('/signin');
                     },
                   ),
                 ),
