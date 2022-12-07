@@ -26,3 +26,4 @@ export 'SelContrInfo_model.dart';
 export 'CheakContr_model.dart';
 export 'AddCheakContr_model.dart';
 export 'Contr_Test_model.dart';
+export 'AddContrTestList_model.dart';

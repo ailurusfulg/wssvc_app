@@ -6,6 +6,7 @@ class ContrTestmodel {
   late final String sCC_DT;
   late final String sCUSTOMER;
   late final String sREMK;
+  late final String sCHECK_FLG;
 
   ContrTestmodel(
       this.sCONTR_KEY,
@@ -15,6 +16,7 @@ class ContrTestmodel {
       this.sCC_DT,
       this.sCUSTOMER,
       this.sREMK,
+      this.sCHECK_FLG,
       );
 }
 
@@ -26,6 +28,7 @@ class ContrTestResponsemodel{
   final String sCC_DT;
   final String sCUSTOMER;
   final String sREMK;
+  final String sCHECK_FLG;
 
   ContrTestResponsemodel({
     required this.sCONTR_KEY,
@@ -35,6 +38,7 @@ class ContrTestResponsemodel{
     required this.sCC_DT,
     required this.sCUSTOMER,
     required this.sREMK,
+    required this.sCHECK_FLG,
   });
 
   factory ContrTestResponsemodel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +50,7 @@ class ContrTestResponsemodel{
       sCC_DT: json['CC_DT'] != null ? json['CC_DT'] as String : "",
       sCUSTOMER: json['CUSTOMER'] != null ? json['CUSTOMER'] as String : "",
       sREMK: json['REMK'] != null ? json['REMK'] as String : "",
+      sCHECK_FLG: json['CHECK_FLG'] != null ? json['CHECK_FLG'] as String : "",
     );
   }
 }

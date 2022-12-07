@@ -20,3 +20,4 @@ export 'api_SelContrInfo.dart';
 export 'api_GetCheakContr.dart';
 export 'api_AddCheakContr.dart';
 export 'api_GetContrTestList.dart';
+export 'api_AddContrTestList.dart';

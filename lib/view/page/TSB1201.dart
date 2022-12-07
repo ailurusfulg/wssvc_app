@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easycontainer_dwl/api/api.dart';
+import 'package:easycontainer_dwl/model/AddContrTestList_model.dart';
 import 'package:easycontainer_dwl/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,10 +18,9 @@ class TSB1201 extends StatefulWidget {
 const int _rowsPerPage = 6;
 final double _dataPagerHeight = Get.height * 0.2;
 
-List<ContrTestResponsemodel> getContrTestList = <ContrTestResponsemodel>[];
-
 OrderInfoDataSource _orderInfoDataSource = OrderInfoDataSource();
-
+List<ContrTestResponsemodel> getContrTestList = <ContrTestResponsemodel>[];
+List<AddContrTestListResponseModel> addContrTestList = <AddContrTestListResponseModel>[];
 List<ContrTestResponsemodel> _paginatedRows = [];
 final GlobalKey<ScaffoldState> _scaffoldKey4 = GlobalKey<ScaffoldState>();
 bool showLoadingIndicator = true;
@@ -38,6 +38,7 @@ class _TSB1201 extends State<TSB1201> {
     });
   }
 
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +46,7 @@ class _TSB1201 extends State<TSB1201> {
       get_ContrTestList();
     });
   }
+
 
   @override
   void dispose() {
@@ -263,11 +265,14 @@ class _TSB1201 extends State<TSB1201> {
   }
 
   Widget _buildDataGrid(BoxConstraints constraint) {
+    final screenHeight = Get.height;
+    final screenWidth = Get.width;
     return SfDataGrid(
         source: _orderInfoDataSource,
         columnWidthMode: ColumnWidthMode.fill,
         columns: <GridColumn>[
           GridColumn(
+            width: screenWidth * 0.05,
               columnName: 'No',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -277,6 +282,7 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: screenWidth * 0.1,
               columnName: 'Owner',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -286,6 +292,7 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: screenWidth * 0.15,
               columnName: 'TankNo',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -295,6 +302,7 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: screenWidth * 0.1,
               columnName: 'SCHEDULED',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -304,6 +312,7 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: screenWidth * 0.1,
               columnName: 'CC',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -313,6 +322,7 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: screenWidth * 0.1,
               columnName: 'CUSTOMER',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -322,6 +332,7 @@ class _TSB1201 extends State<TSB1201> {
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
+              width: screenWidth * 0.25,
               columnName: 'REMARK',
               label: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -330,11 +341,46 @@ class _TSB1201 extends State<TSB1201> {
                     'REMARK',
                     overflow: TextOverflow.ellipsis,
                   ))),
+          GridColumn(
+              width: screenWidth * 0.15,
+              columnName: 'CHECK_FLG',
+              label: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'CHECK_FLG',
+                    overflow: TextOverflow.ellipsis,
+                  ))),
         ]);
   }
 }
 
 class OrderInfoDataSource extends DataGridSource {
+
+  Future<void> get_ContrTestList() async {
+    getContrTestList.clear();
+    APIGetContrTestList apiGetContrTestList = APIGetContrTestList();
+    List<String> sParam = ['WSTANK'];
+    apiGetContrTestList.getSelect("USP_WCY0300", sParam).then((value) {
+        getContrTestList = value.contrtest.isNotEmpty ? value.contrtest : [];
+    });
+  }
+  Future<void> add_ContrTestList(String sCNTKEY, String sCheckFLG, String sREMK) async {
+    APIAddContrTestList apiAddContrTestList = APIAddContrTestList();
+    String sOutCode = '';
+    String sOutMsg  = '';
+    List<String> sParam = ['WSTANK', sCNTKEY.toString(), sCheckFLG, sREMK, '유저아이디' ,sOutCode, sOutMsg];
+    await apiAddContrTestList.getUpdate("USP_WCY0300_U10", sParam).then((value) {
+        if(value.result.isNotEmpty) {
+          addContrTestList = value.result;
+          String Msg = addContrTestList.elementAt(0).rsMsg;
+          if (addContrTestList.elementAt(0).rsCode != 'S') {
+            Get.defaultDialog(title : '알림', content: Text(Msg));
+          }
+          get_ContrTestList();
+        } else {}
+    });
+  }
 
   OrderInfoDataSource() {
     _paginatedRows = getContrTestList.toList(growable: false);
@@ -362,7 +408,7 @@ class OrderInfoDataSource extends DataGridSource {
           } else if (e.columnName == 'Owner') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   e.value.toString(),
                   overflow: TextOverflow.ellipsis,
@@ -370,7 +416,7 @@ class OrderInfoDataSource extends DataGridSource {
           } else if (e.columnName == 'TankNo') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   e.value.toString(),
                   overflow: TextOverflow.ellipsis,
@@ -378,7 +424,7 @@ class OrderInfoDataSource extends DataGridSource {
           } else if (e.columnName == 'SCHDULED') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   e.value.toString(),
                   overflow: TextOverflow.ellipsis,
@@ -386,7 +432,7 @@ class OrderInfoDataSource extends DataGridSource {
           } else if (e.columnName == 'CC') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   e.value.toString(),
                   overflow: TextOverflow.ellipsis,
@@ -394,11 +440,42 @@ class OrderInfoDataSource extends DataGridSource {
           } else if (e.columnName == 'CUSTOMER') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   e.value.toString(),
                   overflow: TextOverflow.ellipsis,
                 ));
+          } else if (e.columnName == 'CHECK_FLG') {
+            return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      minimumSize: const Size(200, 100),
+                      alignment: Alignment.center,
+                      textStyle: const TextStyle(fontSize: 20)
+                  ),
+                  child: Text(e.value.toString(),
+                    style: TextStyle(color : e.value.toString() == 'Y' ? Colors.blue :  Colors.red),),
+                  onPressed: () {
+                    for (int i = 0 ; i < getContrTestList.length ; i++) {
+                        String Check = getContrTestList.elementAt(i).sCHECK_FLG;
+                        Check = (Check == 'Y' ? 'N' : 'Y');
+                        String ConKey = getContrTestList.elementAt(i).sCONTR_KEY;
+                        String CREMK = getContrTestList.elementAt(i).sREMK;
+                        add_ContrTestList(ConKey, Check, CREMK);
+                    }
+                    // String Check = e.value.toString();
+                    // Check = (Check == 'Y' ? 'N' : 'Y');
+                    // add_ContrTestList(row., Check,getContrTestList.elementAt(index).sREMK);
+                  },
+                ),
+                // child: Text(
+                //   e.value.toString(),
+                //   overflow: TextOverflow.ellipsis,
+                // )
+            );
           }
           else {
             return Container(
@@ -407,7 +484,8 @@ class OrderInfoDataSource extends DataGridSource {
                 child: Text(
                   e.value.toString(),
                   overflow: TextOverflow.ellipsis,
-                ));
+                )
+            );
           }
         }).toList());
   }
@@ -444,6 +522,7 @@ class OrderInfoDataSource extends DataGridSource {
       DataGridCell<String>(columnName: 'CC', value: e.sCC_DT),
       DataGridCell<String>(columnName: 'CUSTOMER', value: e.sCUSTOMER),
       DataGridCell<String>(columnName: 'REMARK', value: e.sREMK),
+      DataGridCell<String>(columnName: 'CHECK_FLG', value: e.sCHECK_FLG),
     ])).toList(growable: false);
   }
 }

@@ -51,10 +51,6 @@ class _TSB1200 extends State<TSB1200> {
     apiGetCheakContr.getSelect("USP_WCY0201", sParam).then((value) {
       getCheakContr.clear();
       setState(() {
-        //
-        //
-        // t = '';
-        // TNO = '';
         getCheakContr = value.cheakcontr.isNotEmpty ? value.cheakcontr : [];
       });
     });
