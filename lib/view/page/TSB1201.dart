@@ -362,6 +362,7 @@ class OrderInfoDataSource extends DataGridSource {
     APIGetContrTestList apiGetContrTestList = APIGetContrTestList();
     List<String> sParam = ['WSTANK'];
     apiGetContrTestList.getSelect("USP_WCY0300", sParam).then((value) {
+      getContrTestList.clear();
         getContrTestList = value.contrtest.isNotEmpty ? value.contrtest : [];
     });
   }

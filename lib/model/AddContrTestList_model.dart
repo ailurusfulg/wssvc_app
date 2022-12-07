@@ -17,15 +17,14 @@ class AddContrTestListResponseModel {
 }
 
 class AddContrTestListResultModel {
-  List<AddContrTestListResultModel> result;
+  List<AddContrTestListResponseModel> result;
 
   AddContrTestListResultModel({required this.result});
 
   factory AddContrTestListResultModel.fromJson(Map<String, dynamic> json) {
     var list = json['RESULT'] != null ? json['RESULT'] as List : [];
-    // print(list.runtimeType);
-    List<AddContrTestListResultModel> resultList =
-    list.map((i) => AddContrTestListResultModel.fromJson(i)).toList();
+    List<AddContrTestListResponseModel> resultList =
+    list.map((i) => AddContrTestListResponseModel.fromJson(i)).toList();
     return AddContrTestListResultModel(result: resultList);
   }
 }

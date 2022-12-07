@@ -1066,15 +1066,21 @@ class _TSB1200 extends State<TSB1200> {
                                                           builder: (BuildContext context) => AlertDialog(
                                                             title: Text(getCheakContr.elementAt(index).sTEST_CONTENT),
                                                             // content: Text(getCheakContr.elementAt(index).sREMK),
-                                                            content: TextField(
-                                                              onChanged: (String str) {
-                                                                setState((){
-                                                                  ChageText = str;
-                                                                });
-                                                              },
+                                                            content: SizedBox(
+                                                              width: screenWidth * 0.4,
+                                                              child: TextFormField(
+                                                                decoration: InputDecoration(
+                                                                  labelText: getCheakContr.elementAt(index).sREMK,
+                                                                ),
+                                                                onChanged: (String str) {
+                                                                  setState((){
+                                                                    ChageText = str;
+                                                                  });
+                                                                },
+                                                              ),
                                                             ),
                                                             actions: [
-                                                              ElevatedButton(
+                                                              TextButton(
                                                                   onPressed: () {
                                                                     if(ChageText.isNotEmpty){
                                                                       Test_NO = getCheakContr.elementAt(index).sTEST_NO;
@@ -1087,17 +1093,23 @@ class _TSB1200 extends State<TSB1200> {
                                                                             title:  const Text("알림"),
                                                                             content: const Text('값을 입력해 주세요.'),
                                                                             actions: [
-                                                                              ElevatedButton(
+                                                                              TextButton(
                                                                                   onPressed: () => Navigator.of(context).pop(),
                                                                                   child: const Text('닫기')),
                                                                             ],
                                                                           ));
                                                                     }
                                                                   },
-                                                                  child: const Text('수정')),
-                                                              ElevatedButton(
+                                                                  child: const Text('수정',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black
+                                                                  ),)),
+                                                              TextButton(
                                                                   onPressed: () => Navigator.of(context).pop(),
-                                                                  child: const Text('닫기')),
+                                                                  child: const Text('닫기',
+                                                                  style: TextStyle(
+                                                                    color: Colors.black
+                                                                  ),)),
                                                             ],
                                                           ),
                                                         );
