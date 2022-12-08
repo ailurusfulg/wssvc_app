@@ -450,14 +450,14 @@ class OrderInfoDataSource extends DataGridSource {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.transparent,
                       minimumSize: const Size(200, 100),
                       alignment: Alignment.center,
                       textStyle: const TextStyle(fontSize: 20)
                   ),
-                  child: Text(e.value.toString(),
+                  child: Text(e.value.toString() == 'Y' ? '완료' : '미완료',
                     style: TextStyle(color : e.value.toString() == 'Y' ? Colors.blue :  Colors.red),),
                   onPressed: () {
                     for (int i = 0 ; i < getContrTestList.length ; i++) {
@@ -470,6 +470,7 @@ class OrderInfoDataSource extends DataGridSource {
                     // String Check = e.value.toString();
                     // Check = (Check == 'Y' ? 'N' : 'Y');
                     // add_ContrTestList(row., Check,getContrTestList.elementAt(index).sREMK);
+                    get_ContrTestList();
                   },
                 ),
                 // child: Text(

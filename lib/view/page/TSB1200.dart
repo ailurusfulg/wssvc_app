@@ -653,8 +653,9 @@ class _TSB1200 extends State<TSB1200> {
                                       ),
                                       height: screenHeight * 0.055,
                                       width: screenWidth * 0.28,
-                                      child: const AutoSizeText(
-                                        'ISA',
+                                      child: AutoSizeText(
+                                        getSelcntinfo.elementAt(0).sCUSTOMER.isEmpty ? '' :
+                                        getSelcntinfo.elementAt(0).sCUSTOMER,
                                         style: TextStyle(
                                           height: 2.1,
                                           color: Color.fromRGBO(102, 102, 102, 1),
@@ -867,14 +868,14 @@ class _TSB1200 extends State<TSB1200> {
                                                       ),
                                                       height: screenHeight * 0.055,
                                                       width: screenWidth * 0.11,
-                                                      child: ElevatedButton(
+                                                      child: TextButton(
                                                           style: ElevatedButton.styleFrom(
                                                             backgroundColor: Colors.white,
                                                             minimumSize: const Size(200, 100),
                                                               alignment: Alignment.center,
                                                               textStyle: const TextStyle(fontSize: 20)
                                                           ),
-                                                        child: Text(getCheakContr.elementAt(index).sTEST_STS,
+                                                        child: Text(getCheakContr.elementAt(index).sTEST_STS == 'Y' ? '완료' : '미완료',
                                                           style: TextStyle(color : getCheakContr.elementAt(index).sTEST_STS == 'Y' ? Colors.blue :  Colors.red),),
                                                         onPressed: () {
                                                             setState(() {
@@ -1052,7 +1053,7 @@ class _TSB1200 extends State<TSB1200> {
                                                     // color: Colors.blue,
                                                     height: screenHeight * 0.055,
                                                     width: screenWidth * 0.05, //22
-                                                    child: ElevatedButton(
+                                                    child: TextButton(
                                                       style: ElevatedButton.styleFrom(
                                                           backgroundColor: Colors.white,
                                                           minimumSize: const Size(200, 100),
