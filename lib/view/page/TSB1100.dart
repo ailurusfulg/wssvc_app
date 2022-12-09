@@ -45,7 +45,8 @@ class OwnerDataSource extends DataGridSource {
       return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
+        child: AutoSizeText(e.value.toString(),
+        style: TextStyle(fontSize: 18.6),),
       );
     }).toList());
   }
@@ -75,7 +76,8 @@ class TankDataSource extends DataGridSource {
       return Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
+        child: AutoSizeText(e.value.toString(),
+          style: TextStyle(fontSize: 18.6),),
       );
     }).toList());
   }
@@ -158,7 +160,7 @@ class _TSB1100 extends State<TSB1100> {
                 height: 3,
                 // letterSpacing: 7,
                 color: Color.fromRGBO(75, 75, 75, 1),
-                fontSize: 24.6,
+                fontSize: 27.6,
                 fontFamily: 'NotoSansKR',
                 fontWeight: FontWeight.w800,
               ),
@@ -202,7 +204,7 @@ class _TSB1100 extends State<TSB1100> {
                         style: TextStyle(
                           height: 1.5,
                           color: Color.fromRGBO(88, 105, 214, 1),
-                          fontSize: 18.6,
+                          fontSize: 20.6,
                           fontFamily: 'NotoSansKR',
                           fontWeight: FontWeight.w500,
                         ),
@@ -224,7 +226,7 @@ class _TSB1100 extends State<TSB1100> {
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
-                          fontSize: 18.6,
+                          fontSize: 20.6,
                           fontFamily: 'NotoSansKR',
                           fontWeight: FontWeight.w500,
                         ),
@@ -246,7 +248,7 @@ class _TSB1100 extends State<TSB1100> {
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
-                          fontSize: 18.6,
+                          fontSize: 20.6,
                           fontFamily: 'NotoSansKR',
                           fontWeight: FontWeight.w500,
                         ),
@@ -275,7 +277,7 @@ class _TSB1100 extends State<TSB1100> {
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
-                          fontSize: 18.6,
+                          fontSize: 20.6,
                           fontFamily: 'NotoSansKR',
                           fontWeight: FontWeight.w500,
                         ),
@@ -386,7 +388,7 @@ class _TSB1100 extends State<TSB1100> {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: const TextStyle(
-                                                          fontSize: 20,
+                                                          fontSize: 24,
                                                           height: 2.2),
                                                       decoration:
                                                       InputDecoration(
@@ -754,11 +756,11 @@ class _TSB1100 extends State<TSB1100> {
                                                             screenHeight * 0.05,
                                                         child:
                                                             const AutoSizeText(
-                                                          '',
+                                                          '?',
                                                           style: TextStyle(
                                                             height: 1.5,
                                                             color: Colors.black,
-                                                            fontSize: 16.6,
+                                                            fontSize: 20.6,
                                                             fontFamily:
                                                                 'NotoSansKR',
                                                             fontWeight:

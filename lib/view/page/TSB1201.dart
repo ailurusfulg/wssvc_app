@@ -7,6 +7,7 @@ import 'package:easycontainer_dwl/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TSB1201 extends StatefulWidget {
   const TSB1201({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ final GlobalKey<ScaffoldState> _scaffoldKey4 = GlobalKey<ScaffoldState>();
 bool showLoadingIndicator = true;
 
 class _TSB1201 extends State<TSB1201> {
-
+  static const storage = FlutterSecureStorage();
   Future<void> get_ContrTestList() async {
     getContrTestList.clear();
     APIGetContrTestList apiGetContrTestList = APIGetContrTestList();
@@ -71,7 +72,7 @@ class _TSB1201 extends State<TSB1201> {
               height: 3,
               // letterSpacing: 7,
               color: Color.fromRGBO(75, 75, 75, 1),
-              fontSize: 24.6,
+              fontSize: 27.6,
               fontFamily: 'NotoSansKR',
               fontWeight: FontWeight.w800,
             ),
@@ -110,7 +111,7 @@ class _TSB1201 extends State<TSB1201> {
                       style: TextStyle(
                         height: 1.5,
                         color: Colors.white,
-                        fontSize: 18.6,
+                        fontSize: 20.6,
                         fontFamily: 'NotoSansKR',
                         fontWeight: FontWeight.w500,
                       ),
@@ -136,7 +137,7 @@ class _TSB1201 extends State<TSB1201> {
                       style: TextStyle(
                         height: 1.5,
                         color: Color.fromRGBO(88, 105, 214, 1),
-                        fontSize: 18.6,
+                        fontSize: 20.6,
                         fontFamily: 'NotoSansKR',
                         fontWeight: FontWeight.w500,
                       ),
@@ -158,7 +159,7 @@ class _TSB1201 extends State<TSB1201> {
                       style: TextStyle(
                         height: 1.5,
                         color: Colors.white,
-                        fontSize: 18.6,
+                        fontSize: 20.6,
                         fontFamily: 'NotoSansKR',
                         fontWeight: FontWeight.w500,
                       ),
@@ -187,7 +188,7 @@ class _TSB1201 extends State<TSB1201> {
                               style: TextStyle(
                                 height: 1.5,
                                 color: Colors.white,
-                                fontSize: 18.6,
+                                fontSize: 20.6,
                                 fontFamily: 'NotoSansKR',
                                 fontWeight: FontWeight.w500,
                               ),
@@ -195,6 +196,7 @@ class _TSB1201 extends State<TSB1201> {
                           ]),
                     ),
                     onTap: () {
+                      storage.delete(key: "login");
                       Get.offNamed('/signin');
                     },
                   ),
@@ -401,8 +403,9 @@ class OrderInfoDataSource extends DataGridSource {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               alignment: Alignment.center,
-              child: Text(
+              child: AutoSizeText(
                 e.value.toString(),
+                style: TextStyle(fontSize: 18.6),
                 overflow: TextOverflow.ellipsis,
               ),
             );
@@ -410,40 +413,45 @@ class OrderInfoDataSource extends DataGridSource {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: AutoSizeText(
                   e.value.toString(),
+                  style: TextStyle(fontSize: 18.6),
                   overflow: TextOverflow.ellipsis,
                 ));
           } else if (e.columnName == 'TankNo') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: AutoSizeText(
                   e.value.toString(),
+                  style: TextStyle(fontSize: 18.6),
                   overflow: TextOverflow.ellipsis,
                 ));
           } else if (e.columnName == 'SCHDULED') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: AutoSizeText(
                   e.value.toString(),
+                  style: TextStyle(fontSize: 18.6),
                   overflow: TextOverflow.ellipsis,
                 ));
           } else if (e.columnName == 'CC') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: AutoSizeText(
                   e.value.toString(),
+                  style: TextStyle(fontSize: 18.6),
                   overflow: TextOverflow.ellipsis,
                 ));
           } else if (e.columnName == 'CUSTOMER') {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: AutoSizeText(
                   e.value.toString(),
+                  style: TextStyle(fontSize: 18.6),
                   overflow: TextOverflow.ellipsis,
                 ));
           } else if (e.columnName == 'CHECK_FLG') {
@@ -483,8 +491,9 @@ class OrderInfoDataSource extends DataGridSource {
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: AutoSizeText(
                   e.value.toString(),
+                  style: TextStyle(fontSize: 18.6),
                   overflow: TextOverflow.ellipsis,
                 )
             );

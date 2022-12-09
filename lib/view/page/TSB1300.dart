@@ -23,8 +23,11 @@ import '../../model/LoadOrder_model.dart';
 import '../../model/LocationContr_model.dart';
 import '../../model/SearchContr_model.dart';
 import '../../model/UnLoadOrder_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class TSB1300 extends StatefulWidget {
+
   const TSB1300({Key? key}) : super(key: key);
 
   @override
@@ -34,6 +37,7 @@ class TSB1300 extends StatefulWidget {
 final GlobalKey<ScaffoldState> _scaffoldKey3 = GlobalKey<ScaffoldState>();
 
 class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
+  static const storage = FlutterSecureStorage();
   bool _isDrawerOpen = false;
 
   // # Drawer 콜백
@@ -1026,7 +1030,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                 height: 3,
                 // letterSpacing: 7,
                 color: Color.fromRGBO(75, 75, 75, 1),
-                fontSize: 24.6,
+                fontSize: 27.6,
                 fontFamily: 'NotoSansKR',
                 fontWeight: FontWeight.w800,
               ),
@@ -1065,7 +1069,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                         style: TextStyle(
                           height: 1.5,
                           color: Colors.white,
-                          fontSize: 18.6,
+                          fontSize: 20.6,
                           fontFamily: 'NotoSansKR',
                           fontWeight: FontWeight.w500,
                         ),
@@ -1113,7 +1117,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                         style: TextStyle(
                           height: 1.5,
                           color: Color.fromRGBO(88, 105, 214, 1),
-                          fontSize: 18.6,
+                          fontSize: 20.6,
                           fontFamily: 'NotoSansKR',
                           fontWeight: FontWeight.w500,
                         ),
@@ -1142,7 +1146,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                                 style: TextStyle(
                                   height: 1.5,
                                   color: Colors.white,
-                                  fontSize: 18.6,
+                                  fontSize: 20.6,
                                   fontFamily: 'NotoSansKR',
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -1150,6 +1154,7 @@ class _TSB1300 extends State<TSB1300> with AutomaticKeepAliveClientMixin {
                             ]),
                       ),
                       onTap: () {
+                        storage.delete(key: "login");
                         Get.offNamed('/signin');
                       },
                     ),

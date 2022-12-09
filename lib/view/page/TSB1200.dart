@@ -5,6 +5,7 @@ import 'package:easycontainer_dwl/api/api.dart';
 import 'package:easycontainer_dwl/model/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TSB1200 extends StatefulWidget {
   const TSB1200({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class Controller extends GetxController {
 
 class _TSB1200 extends State<TSB1200> {
   Controller controller = Get.put(Controller());
+  static const storage = FlutterSecureStorage();
   bool switchValue = false;
   String buttonState = '완료';
   List<SelContrInfoResponsemodel> getSelcntinfo = [];
@@ -102,7 +104,7 @@ class _TSB1200 extends State<TSB1200> {
               height: 3,
               // letterSpacing: 7,
               color: Color.fromRGBO(75, 75, 75, 1),
-              fontSize: 24.6,
+              fontSize: 27.6,
               fontFamily: 'NotoSansKR',
               fontWeight: FontWeight.w800,
             ),
@@ -145,7 +147,7 @@ class _TSB1200 extends State<TSB1200> {
                       style: TextStyle(
                         height: 1.5,
                         color: Color.fromRGBO(88, 105, 214, 1),
-                        fontSize: 18.6,
+                        fontSize: 20.6,
                         fontFamily: 'NotoSansKR',
                         fontWeight: FontWeight.w500,
                       ),
@@ -167,7 +169,7 @@ class _TSB1200 extends State<TSB1200> {
                       style: TextStyle(
                         height: 1.5,
                         color: Colors.white,
-                        fontSize: 18.6,
+                        fontSize: 20.6,
                         fontFamily: 'NotoSansKR',
                         fontWeight: FontWeight.w500,
                       ),
@@ -189,7 +191,7 @@ class _TSB1200 extends State<TSB1200> {
                       style: TextStyle(
                         height: 1.5,
                         color: Colors.white,
-                        fontSize: 18.6,
+                        fontSize: 20.6,
                         fontFamily: 'NotoSansKR',
                         fontWeight: FontWeight.w500,
                       ),
@@ -218,7 +220,7 @@ class _TSB1200 extends State<TSB1200> {
                               style: TextStyle(
                                 height: 1.5,
                                 color: Colors.white,
-                                fontSize: 18.6,
+                                fontSize: 20.6,
                                 fontFamily: 'NotoSansKR',
                                 fontWeight: FontWeight.w500,
                               ),
@@ -226,6 +228,7 @@ class _TSB1200 extends State<TSB1200> {
                           ]),
                     ),
                     onTap: () {
+                      storage.delete(key: "login");
                       Get.offNamed('/signin');
                     },
                   ),
@@ -343,7 +346,7 @@ class _TSB1200 extends State<TSB1200> {
                                                       style: const TextStyle(
                                                         height: 1.5,
                                                         color: Colors.black,
-                                                        fontSize: 16.6,
+                                                        fontSize: 20.6,
                                                         fontFamily: 'NotoSansKR',
                                                         fontWeight:
                                                             FontWeight.w600,
