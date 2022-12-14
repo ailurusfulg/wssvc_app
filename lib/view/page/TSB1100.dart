@@ -85,10 +85,6 @@ class TankDataSource extends DataGridSource {
 
 class _TSB1100 extends State<TSB1100> {
   static const storage = FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
-  // List<Owner> owners = <Owner>[];
-  // late OwnerDataSource ownerDataSource;
-  // List<Tank> tanks = <Tank>[];
-  // late TankDataSource tankDataSource;
   final TextEditingController _DataTimeEditingController = TextEditingController();
   final TextEditingController _EstimatedEditingController = TextEditingController();
   List<CountContrResponsemodel> cnt_Contr= [];
@@ -108,11 +104,6 @@ class _TSB1100 extends State<TSB1100> {
       cnt_Contr.clear();
       setState(() {
           cnt_Contr = value.countcontr.isNotEmpty ? value.countcontr : [];
-          // Get.log(cnt_Contr.elementAt(0).sIN_PLN_DT);
-          // Get.log(_DataTimeEditingController.text);
-          // Get.log(DateFormat('yyyy-MM-dd').format(DateTime.now()));
-          // Get.log(cnt_Contr.elementAt(0).sBP_NM);
-          // Get.log(cnt_Contr.elementAt(0).sCNT_CNTR.toString());
       });
     });
   }
@@ -132,9 +123,6 @@ class _TSB1100 extends State<TSB1100> {
   @override
   void initState() {
     super.initState();
-    // owners = getOwnerData();
-    // ownerDataSource = OwnerDataSource(ownerData: owners);
-    // tanks = getTankData();
     setState(() {
       sPickDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
       get_CountContr(DateFormat('yyyy-MM-dd').format(DateTime.now()));

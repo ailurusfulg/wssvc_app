@@ -452,9 +452,9 @@ class _TSB1200 extends State<TSB1200> {
                                         style: const TextStyle(
                                           height: 2.1,
                                           color: Color.fromRGBO(102, 102, 102, 1),
-                                          fontSize: 24.6,
+                                          fontSize: 26.6,
                                           fontFamily: 'NotoSansKR',
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -522,9 +522,9 @@ class _TSB1200 extends State<TSB1200> {
                                         style: const TextStyle(
                                           height: 2.1,
                                           color: Color.fromRGBO(102, 102, 102, 1),
-                                          fontSize: 24.6,
+                                          fontSize: 26.6,
                                           fontFamily: 'NotoSansKR',
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -592,9 +592,9 @@ class _TSB1200 extends State<TSB1200> {
                                         style: const TextStyle(
                                           height: 2.1,
                                           color: Color.fromRGBO(102, 102, 102, 1),
-                                          fontSize: 24.6,
+                                          fontSize: 26.6,
                                           fontFamily: 'NotoSansKR',
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -659,12 +659,12 @@ class _TSB1200 extends State<TSB1200> {
                                       child: AutoSizeText(
                                         getSelcntinfo.elementAt(0).sCUSTOMER.isEmpty ? '' :
                                         getSelcntinfo.elementAt(0).sCUSTOMER,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           height: 2.1,
                                           color: Color.fromRGBO(102, 102, 102, 1),
-                                          fontSize: 24.6,
+                                          fontSize: 26.6,
                                           fontFamily: 'NotoSansKR',
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -907,10 +907,6 @@ class _TSB1200 extends State<TSB1200> {
                                                     height: screenHeight * 0.055,
                                                     width: screenWidth * 0.12,
                                                     child: AutoSizeText(
-                                            // getCheakContr.elementAt(index).sTEST_STS == 'Y' ?
-                                            // getCheakContr.elementAt(index).sTEST_DT = DateFormat('yyyy-MM-dd').format(DateTime.now()) :
-                                            // getCheakContr.elementAt(index).sTEST_DT = '',
-                                            //           getCheakContr.elementAt(index).sTEST_STS == 'Y' ? getCheakContr.elementAt(index).sTEST_DT : '',
                                                       getCheakContr.elementAt(index).sTEST_DT,
                                                       style: const TextStyle(
                                                         height: 2.1,
@@ -1094,12 +1090,33 @@ class _TSB1200 extends State<TSB1200> {
                                                                       showDialog(
                                                                           context: context,
                                                                           builder: (BuildContext context) => AlertDialog(
-                                                                            title:  const Text("알림"),
-                                                                            content: const Text('값을 입력해 주세요.'),
+                                                                            title:  RichText(
+                                                                              text: const TextSpan(
+                                                                                children: [
+                                                                                  WidgetSpan(
+                                                                                      child: Icon(Icons.notifications_active),
+                                                                                  ),
+                                                                                  TextSpan(
+                                                                                    text: '알림',
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.black,
+                                                                                    )
+                                                                                  )
+                                                                                ]
+                                                                              )
+                                                                            ),
+                                                                            content: const Text('값을 입력해 주세요.',
+                                                                            style: TextStyle(
+                                                                              fontSize: 18,
+                                                                            ),
+                                                                            textAlign: TextAlign.center,),
                                                                             actions: [
                                                                               TextButton(
                                                                                   onPressed: () => Navigator.of(context).pop(),
-                                                                                  child: const Text('닫기')),
+                                                                                  child: const Text('닫기',
+                                                                                      style: TextStyle(
+                                                                                          color: Colors.black
+                                                                                      ))),
                                                                             ],
                                                                           ));
                                                                     }
